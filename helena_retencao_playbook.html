@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Playbook Retenção — helena</title>
+<style>
+:root{--green:#22C55E;--green-d:#16A34A;--black:#0A0A0A;--muted:#888;--card:#141414;--border:rgba(255,255,255,0.07);--bg:#0A0A0A;--bg2:#111110;--text:#E6EDF3;--text2:rgba(255,255,255,.5);--text3:rgba(255,255,255,.25)}
+body.light{--card:#ffffff;--border:rgba(0,0,0,0.09);--bg:#f9f9f7;--bg2:#f1f0ea;--text:#1a1a1a;--text2:#6b6b66;--text3:#aaa}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;transition:background .25s,color .25s}
+nav{position:sticky;top:0;z-index:100;padding:14px 40px;display:flex;align-items:center;justify-content:space-between;background:rgba(10,10,10,0.97);backdrop-filter:blur(18px);border-bottom:1px solid rgba(255,255,255,0.06)}
+body.light nav{background:rgba(249,249,247,0.97);border-bottom-color:rgba(0,0,0,0.08)}
+.nav-logo img{height:28px;width:auto}
+.nav-right{display:flex;align-items:center;gap:10px}
+.nav-badge{padding:4px 12px;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.3);border-radius:20px;font-size:11px;font-weight:700;color:var(--green)}
+.thm-btn{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:5px 12px;cursor:pointer;font-size:14px;transition:all .15s}
+.thm-btn:hover{border-color:var(--green);background:rgba(34,197,94,.1)}
+body.light .thm-btn{background:rgba(0,0,0,0.06);border-color:rgba(0,0,0,0.15)}
+.wrap{max-width:1100px;margin:0 auto;padding:60px 40px 80px}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);border-radius:4px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin-bottom:16px}
+.hero-tag::before{content:"";width:6px;height:6px;background:var(--green);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+h1{font-size:clamp(32px,5vw,56px);font-weight:800;line-height:1.05;letter-spacing:-.03em;margin-bottom:12px}
+h1 span{color:var(--green)}
+.sub{font-size:15px;color:var(--text2);line-height:1.75;max-width:580px;margin-bottom:40px}
+.mindset{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:48px}
+.mindset-card{background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.18);border-radius:12px;padding:18px 20px}
+.mindset-icon{font-size:22px;margin-bottom:8px}
+.mindset-title{font-size:13px;font-weight:700;color:var(--green);margin-bottom:6px}
+.mindset-text{font-size:12px;color:var(--text2);line-height:1.6}
+.section-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin-bottom:20px;display:flex;align-items:center;gap:8px}
+.section-label::before{content:"";width:20px;height:2px;background:var(--green)}
+.obj-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:48px}
+.obj-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;display:flex;flex-direction:column}
+.obj-num{font-size:11px;font-weight:700;color:var(--text3);margin-bottom:10px}
+.obj-icon{font-size:24px;margin-bottom:8px}
+.obj-name{font-size:15px;font-weight:700;color:var(--text);margin-bottom:6px}
+.obj-signal{font-size:12px;color:var(--text2);font-style:italic;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--border)}
+ul.acts{list-style:none;display:flex;flex-direction:column;gap:7px;flex:1}
+ul.acts li{font-size:12px;color:var(--text2);display:flex;gap:8px;line-height:1.5}
+ul.acts li::before{content:"→";color:var(--green);font-weight:700;flex-shrink:0}
+.obj-cta{margin-top:14px;padding-top:12px;border-top:1px solid var(--border);font-size:11px;font-weight:700;color:var(--green)}
+.rules{display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;gap:10px;margin-bottom:48px}
+.rule-pill{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);border-radius:10px;padding:14px 16px;text-align:center}
+.rule-trigger{font-size:11px;color:var(--text2);margin-bottom:6px}
+.rule-action{font-size:12px;font-weight:700;color:var(--green)}
+.tip{background:rgba(34,197,94,.06);border-left:3px solid var(--green);border-radius:0 10px 10px 0;padding:16px 20px;font-size:13px;color:var(--text2);line-height:1.7}
+.tip b{color:var(--green)}
+footer{text-align:center;padding:40px;font-size:12px;color:var(--text3);border-top:1px solid var(--border);margin-top:80px}
+@media(max-width:900px){.obj-grid{grid-template-columns:1fr 1fr}.mindset,.rules{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.obj-grid{grid-template-columns:1fr}.mindset{grid-template-columns:1fr}.rules{grid-template-columns:1fr 1fr}nav{padding:12px 20px}.wrap{padding:40px 20px 60px}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-logo">
+    <img src="logo helena.png" alt="helena">
+  </div>
+  <div class="nav-right">
+    <div class="nav-badge">CS Retenção v1.0</div>
+    <button class="thm-btn" id="thm-btn" onclick="toggleTheme()"><span id="thm-icon">☀️</span></button>
+  </div>
+</nav>
+<div class="wrap">
+  <div class="hero-tag">Etapa 05 — Customer Success</div>
+  <h1>Retenção & <span>Anti-churn</span></h1>
+  <p class="sub">Processo estruturado para identificar risco, diagnosticar a causa raiz e agir com a estratégia certa. Ação sem diagnóstico é aposta no escuro.</p>
+
+  <div class="mindset">
+    <div class="mindset-card"><div class="mindset-icon">🔭</div><div class="mindset-title">Antecipe sempre</div><div class="mindset-text">Não espere o cliente cancelar. Atue antes do problema crescer e virar perda.</div></div>
+    <div class="mindset-card"><div class="mindset-icon">💡</div><div class="mindset-title">Clareza de valor</div><div class="mindset-text">O cliente precisa entender o valor a todo momento — não só no onboarding.</div></div>
+    <div class="mindset-card"><div class="mindset-icon">🎯</div><div class="mindset-title">Diagnóstico correto</div><div class="mindset-text">Sem identificar a causa raiz, qualquer ação é uma aposta no escuro.</div></div>
+  </div>
+
+  <div class="section-label">5 Regras de Ouro</div>
+  <div class="rules" style="margin-bottom:48px">
+    <div class="rule-pill"><div class="rule-trigger">Identificou risco</div><div class="rule-action">→ AGE RÁPIDO</div></div>
+    <div class="rule-pill"><div class="rule-trigger">Entendeu o motivo</div><div class="rule-action">→ AGE CERTO</div></div>
+    <div class="rule-pill"><div class="rule-trigger">Cliente não usa</div><div class="rule-action">→ ATIVA</div></div>
+    <div class="rule-pill"><div class="rule-trigger">Cliente quer sair</div><div class="rule-action">→ NEGOCIA + EDUCA</div></div>
+    <div class="rule-pill"><div class="rule-trigger">Sempre</div><div class="rule-action">→ MOSTRA VALOR</div></div>
+  </div>
+
+  <div class="section-label">9 Objeções mapeadas — diagnóstico e ação</div>
+  <div class="obj-grid">
+    <div class="obj-card">
+      <div class="obj-num">01</div><div class="obj-icon">💸</div>
+      <div class="obj-name">Custo / Redução</div>
+      <div class="obj-signal">"Está caro" · "Preciso cortar gastos"</div>
+      <ul class="acts">
+        <li>Identificar se é financeiro real ou falta de valor percebido</li>
+        <li>Mostrar ROI concreto antes de qualquer negociação</li>
+        <li>Reforçar resultados obtidos com dados reais</li>
+        <li>Oferecer ajuste de plano apenas após mostrar valor</li>
+      </ul>
+      <div class="obj-cta">→ Desconto é ferramenta — resultado é a arma certa</div>
+    </div>
+    <div class="obj-card">
+      <div class="obj-num">02</div><div class="obj-icon">⚔️</div>
+      <div class="obj-name">Concorrência</div>
+      <div class="obj-signal">"Outro é mais barato" · "Outro é melhor"</div>
+      <ul class="acts">
+        <li>Marcar call — nunca resolver esse assunto por WhatsApp</li>
+        <li>Se for preço: negociar com argumentos de valor real</li>
+        <li>Se for funcionalidade: apresentar alternativa interna</li>
+        <li>Se for atendimento: identificar a falha e corrigir</li>
+      </ul>
+      <div class="obj-cta">→ Nunca ganhe no grito — use estratégia e argumentação</div>
+    </div>
+    <div class="obj-card">
+      <div class="obj-num">03</div><div class="obj-icon">📉</div>
+      <div class="obj-name">Baixo Uso / Falta de Valor</div>
+      <div class="obj-signal">"Não estou usando" · "Não vejo resultado"</div>
+      <ul class="acts">
+        <li>Ativar quick wins imediatos — vitória pequena primeiro</li>
+        <li>Focar em CRM, automação, etiquetas e organização</li>
+        <li>Fazer treinamento rápido e revisão de estratégia</li>
+        <li>Só falar em upgrade depois de entregar resultado</li>
+      </ul>
+      <div class="obj-cta">→ Quase sempre é onboarding mal feito</div>
+    </div>
+    <div class="obj-card">
+      <div class="obj-num">04</div><div class="obj-icon">👤</div>
+      <div class="obj-name">Falta de Contato com Decisor</div>
+      <div class="obj-signal">"Quem paga não participa" · "Decisor distante"</div>
+      <ul class="acts">
+        <li>Incluir decisor já no kickoff — sem exceção</li>
+        <li>Copiá-lo nos e-mails estratégicos e resultados</li>
+        <li>Criar rotina de reuniões: 30 / 60 / 90 dias</li>
+        <li>Apresentar resultados diretamente para quem paga</li>
+      </ul>
+      <div class="obj-cta">→ Se o decisor não vê valor = churn certo</div>
+    </div>
+    <div class="obj-card">
+      <div class="obj-num">05</div><div class="obj-icon">💳</div>
+      <div class="obj-name">Inadimplência</div>
+      <div class="obj-signal">"Atraso de pagamento" · "Fatura em aberto"</div>
+      <ul class="acts">
+        <li>Agir no primeiro sinal — não esperar acumular</li>
+        <li>Abordagem consultiva: "Como posso te ajudar?"</li>
+        <li>Usar WhatsApp + e-mail + telefone em sequência</li>
+        <li>Buscar solução antes de ameaçar cancelamento</li>
+      </ul>
+      <div class="obj-cta">→ Inadimplência é sintoma — descubra a causa</div>
+    </div>
+    <div class="obj-card">
+      <div class="obj-num">06</div><div class="obj-icon">🔄</div>
+      <div class="obj-name">Mudança Societária / Novo Responsável</div>
+      <div class="obj-signal">"Novo gestor" · "Mudança interna"</div>
+      <ul class="acts">
+        <li>Tratar como nova venda — começar do zero</li>
+        <li>Fazer reunião de transição e apresentação completa</li>
+        <li>Refazer diagnóstico com o novo responsável</li>
+        <li>Não assumir que histórico positivo se transfere</li>
+      </ul>
+      <div class="obj-cta">→ Um dos maiores motivos ocultos de churn</div>
+    </div>
+    <div class="obj-card">
+      <div class="obj-num">07</div><div class="obj-icon">🚫</div>
+      <div class="obj-name">Não Implantou / Desistência</div>
+      <div class="obj-signal">"Sumiu após a venda" · "Não responde"</div>
+      <ul class="acts">
+        <li>Contato ativo em até 24h após o silêncio</li>
+        <li>Reforço por múltiplos canais em poucas horas</li>
+        <li>Acionar vendedor para apoio imediato</li>
+        <li>Fazer ligação ativa — não só mensagem</li>
+      </ul>
+      <div class="obj-cta">→ Persistência aqui define retenção</div>
+    </div>
+    <div class="obj-card">
+      <div class="obj-num">08</div><div class="obj-icon">📵</div>
+      <div class="obj-name">Banimento de Número</div>
+      <div class="obj-signal">"Número bloqueado" · "Perda de acesso"</div>
+      <ul class="acts">
+        <li>Prevenção: explicar API Oficial desde o onboarding</li>
+        <li>Orientar boas práticas de uso continuamente</li>
+        <li>Se API Oficial: acionar análise via Meta</li>
+        <li>Não-oficial: ter plano B de migração preparado</li>
+      </ul>
+      <div class="obj-cta">→ Aja como consultor estratégico</div>
+    </div>
+    <div class="obj-card">
+      <div class="obj-num">09</div><div class="obj-icon">⚙️</div>
+      <div class="obj-name">Complexidade / API Oficial</div>
+      <div class="obj-signal">"Acho difícil" · "É caro demais"</div>
+      <ul class="acts">
+        <li>Posicionar como investimento, não custo</li>
+        <li>Explicar riscos concretos: bloqueios, perda de base</li>
+        <li>Educar com números e comparações reais</li>
+        <li>Mostrar casos de sucesso de quem foi pela API Oficial</li>
+      </ul>
+      <div class="obj-cta">→ Educação é retenção. Quem entende o valor não cancela</div>
+    </div>
+  </div>
+
+  <div class="tip"><b>Regra nº 1:</b> Sempre que houver risco ou cancelamento, descubra o motivo real (causa raiz) antes de qualquer ação. Nunca responda objeções de forma defensiva — entenda primeiro, depois reframe.</div>
+</div>
+<footer>helena · CS Retenção Playbook v1.0</footer>
+
+<script>
+(function(){
+  if(localStorage.getItem('htheme')==='light') document.body.classList.add('light');
+  updateThemeBtn();
+})();
+function toggleTheme(){
+  document.body.classList.toggle('light');
+  localStorage.setItem('htheme', document.body.classList.contains('light') ? 'light' : 'dark');
+  updateThemeBtn();
+}
+function updateThemeBtn(){
+  var icon = document.getElementById('thm-icon');
+  if(icon) icon.textContent = document.body.classList.contains('light') ? '🌙' : '☀️';
+}
+</script>
+</body>
+</html>

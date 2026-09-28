@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Playbook Ongoing — helena</title>
+<style>
+:root{--green:#22C55E;--green-d:#16A34A;--black:#0A0A0A;--muted:#888;--card:#141414;--border:rgba(255,255,255,0.07);--bg:#0A0A0A;--bg2:#111110;--text:#E6EDF3;--text2:rgba(255,255,255,.5);--text3:rgba(255,255,255,.25)}
+body.light{--card:#ffffff;--border:rgba(0,0,0,0.09);--bg:#f9f9f7;--bg2:#f1f0ea;--text:#1a1a1a;--text2:#6b6b66;--text3:#aaa}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;transition:background .25s,color .25s}
+nav{position:sticky;top:0;z-index:100;padding:14px 40px;display:flex;align-items:center;justify-content:space-between;background:rgba(10,10,10,0.97);backdrop-filter:blur(18px);border-bottom:1px solid rgba(255,255,255,0.06)}
+body.light nav{background:rgba(249,249,247,0.97);border-bottom-color:rgba(0,0,0,0.08)}
+.nav-logo{display:flex;align-items:center;gap:10px}
+.nav-logo img{height:28px;width:auto}
+.nav-right{display:flex;align-items:center;gap:10px}
+.nav-badge{padding:4px 12px;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.3);border-radius:20px;font-size:11px;font-weight:700;color:var(--green)}
+.thm-btn{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:5px 12px;cursor:pointer;font-size:14px;transition:all .15s}
+.thm-btn:hover{border-color:var(--green);background:rgba(34,197,94,.1)}
+body.light .thm-btn{background:rgba(0,0,0,0.06);border-color:rgba(0,0,0,0.15)}
+.wrap{max-width:1100px;margin:0 auto;padding:60px 40px 80px}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);border-radius:4px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin-bottom:16px}
+.hero-tag::before{content:"";width:6px;height:6px;background:var(--green);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+h1{font-size:clamp(32px,5vw,56px);font-weight:800;line-height:1.05;letter-spacing:-.03em;margin-bottom:12px}
+h1 span{color:var(--green)}
+.sub{font-size:15px;color:var(--text2);line-height:1.75;max-width:580px;margin-bottom:56px}
+.rule-box{background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.2);border-radius:14px;padding:20px 24px;margin-bottom:48px;display:flex;align-items:flex-start;gap:14px}
+.rule-icon{font-size:24px;flex-shrink:0}
+.rule-text b{color:var(--green)}
+.rule-text{font-size:13px;color:var(--text2);line-height:1.7}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px}
+.card.accent{background:rgba(34,197,94,.06);border-color:rgba(34,197,94,.18)}
+.card-icon{font-size:22px;margin-bottom:12px}
+.card-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:10px}
+ul.items{list-style:none;display:flex;flex-direction:column;gap:7px}
+ul.items li{font-size:13px;color:var(--text2);display:flex;gap:8px;line-height:1.5}
+ul.items li::before{content:"→";color:var(--green);font-weight:700;flex-shrink:0}
+ul.items li b{color:var(--green)}
+.section-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.section-label::before{content:"";width:20px;height:2px;background:var(--green)}
+.tip{background:rgba(34,197,94,.06);border-left:3px solid var(--green);border-radius:0 10px 10px 0;padding:14px 18px;font-size:13px;color:var(--text2);line-height:1.7;margin-top:24px}
+.tip b{color:var(--green)}
+footer{text-align:center;padding:40px;font-size:12px;color:var(--text3);border-top:1px solid var(--border);margin-top:80px}
+@media(max-width:768px){.grid-2,.grid-3{grid-template-columns:1fr}nav{padding:12px 20px}.wrap{padding:40px 20px 60px}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-logo">
+    <img src="logo helena.png" alt="helena">
+  </div>
+  <div class="nav-right">
+    <div class="nav-badge">CS Ongoing v1.0</div>
+    <button class="thm-btn" id="thm-btn" onclick="toggleTheme()"><span id="thm-icon">☀️</span></button>
+  </div>
+</nav>
+<div class="wrap">
+  <div class="hero-tag">Etapa 04 — Customer Success</div>
+  <h1>Ongoing & <span>Sucesso do Cliente</span></h1>
+  <p class="sub">Cadência ativa pós-onboarding para garantir saúde da conta, expansão de receita e retenção de longo prazo. CS que só aparece quando o cliente reclama chega tarde.</p>
+
+  <div class="rule-box">
+    <div class="rule-icon">📌</div>
+    <div class="rule-text"><b>Regra de ouro:</b> Cadência ativa não é custo — é a principal ferramenta de retenção e expansão de receita. O CS que antecipa problemas tem poder de influência. O que reage ao cancelamento já perdeu a batalha.</div>
+  </div>
+
+  <div class="section-label">Cadência de contatos</div>
+  <div class="grid-2" style="margin-bottom:40px">
+    <div class="card">
+      <div class="card-icon">📅</div>
+      <div class="card-title">Cadência estruturada</div>
+      <ul class="items">
+        <li><b>Mensal:</b> check-in de saúde — uso, dúvidas, satisfação do time</li>
+        <li><b>Trimestral:</b> revisão de resultados e definição de novas metas</li>
+        <li><b>Semestral:</b> QBR — avaliação estratégica com o decisor</li>
+        <li><b>Pontual:</b> ação imediata ao detectar qualquer sinal de risco</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-icon">📋</div>
+      <div class="card-title">Roteiro do check-in mensal</div>
+      <ul class="items">
+        <li>Como está o volume de atendimentos este mês?</li>
+        <li>A equipe está usando bem a plataforma?</li>
+        <li>Tem alguma funcionalidade que não está utilizando?</li>
+        <li>O que aconteceu de bom desde o último contato?</li>
+        <li>Qual o principal objetivo para o próximo mês?</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section-label">Métricas de saúde da conta</div>
+  <div class="grid-3" style="margin-bottom:40px">
+    <div class="card">
+      <div class="card-icon">📊</div>
+      <div class="card-title">Volume & Atividade</div>
+      <ul class="items">
+        <li>Volume de atendimentos por mês (crescendo ou caindo?)</li>
+        <li>Logins e atividade dos usuários na plataforma</li>
+        <li>Tempo médio de resposta e taxa de conclusão</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-icon">🤖</div>
+      <div class="card-title">Uso de funcionalidades</div>
+      <ul class="items">
+        <li>Uso ativo do chatbot e automações</li>
+        <li>CRM / funil sendo utilizado</li>
+        <li>Disparos em massa e sequências</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-icon">🎯</div>
+      <div class="card-title">Satisfação & Resultado</div>
+      <ul class="items">
+        <li>NPS e feedback periódico do cliente</li>
+        <li>Resultados vs metas definidas no kickoff</li>
+        <li>Adimplência e renovação em dia</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section-label">Oportunidades de expansão (Upsell)</div>
+  <div class="grid-2" style="margin-bottom:40px">
+    <div class="card accent">
+      <div class="card-icon">🚀</div>
+      <div class="card-title">Quando propor upgrade de plano</div>
+      <ul class="items">
+        <li>Número de usuários se aproximando do limite do plano atual</li>
+        <li>Cliente pedindo funcionalidades que estão no plano superior</li>
+        <li>Volume de atendimentos crescendo consistentemente</li>
+        <li>Expansão da operação: novas equipes ou unidades</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-icon">➕</div>
+      <div class="card-title">Add-ons disponíveis</div>
+      <ul class="items">
+        <li>Automação Ilimitada — R$147/mês</li>
+        <li>WhatsApp Adicional — R$89/mês</li>
+        <li>Direct ou Messenger Adicional — R$69/mês</li>
+        <li>Integração Banco ASAAS — R$99/mês</li>
+        <li>Transcrição de áudio com IA — R$6,99/usuário/mês</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section-label">Sinais de alerta — agir imediatamente</div>
+  <div class="grid-3" style="margin-bottom:40px">
+    <div class="card">
+      <div class="card-icon">📉</div>
+      <div class="card-title">Sinais de abandono</div>
+      <ul class="items">
+        <li>Queda abrupta no volume de atendimentos</li>
+        <li>Usuários sem login há mais de 7 dias corridos</li>
+        <li>Cliente não responde check-ins por mais de 5 dias</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔴</div>
+      <div class="card-title">Sinais de risco financeiro</div>
+      <ul class="items">
+        <li>Inadimplência ou fatura vencida em aberto</li>
+        <li>Pedido de cancelamento ou downgrade</li>
+        <li>Reclamações sobre custo-benefício</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-icon">⚠️</div>
+      <div class="card-title">Sinais operacionais</div>
+      <ul class="items">
+        <li>Reclamações técnicas recorrentes sem resolução</li>
+        <li>Troca de responsável sem comunicação prévia</li>
+        <li>Solicitação de funcionalidade que não existe</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section-label">QBR — Revisão Trimestral</div>
+  <div class="grid-2" style="margin-bottom:40px">
+    <div class="card">
+      <div class="card-icon">🎯</div>
+      <div class="card-title">Pauta do QBR</div>
+      <ul class="items">
+        <li>Resultados do trimestre vs metas definidas no kickoff</li>
+        <li>Funcionalidades subutilizadas que podem ser ativadas</li>
+        <li>Novos objetivos e metas para o próximo trimestre</li>
+        <li>Oportunidades de expansão e crescimento</li>
+        <li>Coleta de NPS e feedback estruturado</li>
+      </ul>
+    </div>
+    <div class="card accent">
+      <div class="card-icon">💡</div>
+      <div class="card-title">Boas práticas do CS</div>
+      <ul class="items">
+        <li>Nunca espere o cliente reclamar — antecipe sempre</li>
+        <li>Mostre valor com dados concretos, não com argumentos</li>
+        <li>Documente tudo no CRM após cada contato</li>
+        <li>Envolva o decisor nas revisões estratégicas</li>
+        <li>Celebre vitórias do cliente — isso cria vínculo emocional</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="tip"><b>Regra de ouro do Ongoing:</b> O CS que só aparece quando o cliente reclama chega tarde. Cada contato proativo vale mais do que dez reactivos.</div>
+</div>
+<footer>helena · CS Ongoing Playbook v1.0</footer>
+
+<script>
+(function(){
+  if(localStorage.getItem('htheme')==='light') document.body.classList.add('light');
+  updateThemeBtn();
+})();
+function toggleTheme(){
+  document.body.classList.toggle('light');
+  localStorage.setItem('htheme', document.body.classList.contains('light') ? 'light' : 'dark');
+  updateThemeBtn();
+}
+function updateThemeBtn(){
+  var icon = document.getElementById('thm-icon');
+  if(icon) icon.textContent = document.body.classList.contains('light') ? '🌙' : '☀️';
+}
+</script>
+</body>
+</html>

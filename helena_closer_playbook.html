@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Playbook Closer — helenaCRM</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --green: #22C55E; --green-d: #16A34A;
+    --black: #0A0A0A;
+    --bg: #111110; --bg2: #1a1a18; --card: #1e1e1c;
+    --border: rgba(255,255,255,0.1); --border2: rgba(255,255,255,0.2);
+    --text: #f0ede6; --text2: #9a9990; --text3: #6b6b66;
+    --r-md: 8px; --r-lg: 12px;
+  }
+  body.light {
+    --bg:#f9f9f7;--bg2:#f1f0ea;--card:#ffffff;--border:rgba(0,0,0,0.12);--border2:rgba(0,0,0,0.22);--text:#1a1a1a;--text2:#6b6b66;--text3:#9a9990;
+  }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); transition: background .25s, color .25s; }
+  .container { max-width: 820px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+
+  /* HERO */
+  .hero { background: #0A0A0A; border-radius: var(--r-lg); padding: 1.75rem 2rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+  .hero img { height: 30px; width: auto; flex-shrink: 0; }
+  .hero-badge { background: #22C55E22; border: 1px solid #22C55E44; color: var(--green); font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
+  .hero-sub { font-size: 12px; color: #9ca3af; margin-top: 3px; }
+
+  /* THEME BUTTON */
+  .thm-btn { margin-left: auto; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 5px 12px; cursor: pointer; font-size: 14px; transition: all .15s; flex-shrink: 0; }
+  .thm-btn:hover { border-color: var(--green); background: rgba(34,197,94,.1); }
+
+  /* TABS */
+  .tabs { display: flex; gap: 4px; margin-bottom: 1.25rem; background: var(--bg2); border-radius: var(--r-lg); padding: 4px; flex-wrap: wrap; }
+  .tab-btn { flex: 1; min-width: 80px; padding: 8px 4px; border: none; background: transparent; font-size: 11px; font-weight: 400; color: var(--text2); border-radius: var(--r-md); cursor: pointer; transition: all .15s; white-space: nowrap; }
+  .tab-btn.active { background: #0A0A0A; color: #fff; font-weight: 600; }
+  .tab-btn:hover:not(.active) { background: var(--card); color: var(--text); }
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* CARDS */
+  .card { background: var(--card); border: 0.5px solid var(--border); border-radius: var(--r-lg); padding: 1.25rem; margin-bottom: 1rem; }
+  .card-title { font-size: 14px; font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 8px; margin-bottom: .75rem; }
+  .card-icon { width: 28px; height: 28px; border-radius: 8px; background: var(--green); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .card-icon svg { width: 14px; height: 14px; }
+  .section-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--text2); margin-bottom: .6rem; }
+
+  /* HANDOFF */
+  .handoff-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
+  @media(max-width:500px){ .handoff-grid{ grid-template-columns:1fr; } }
+  .handoff-card { background: var(--bg2); border-radius: var(--r-md); padding: 1rem; }
+  .handoff-label { font-size: 11px; font-weight: 600; color: var(--green); text-transform: uppercase; letter-spacing: .05em; margin-bottom: .5rem; }
+  .handoff-item { font-size: 12px; color: var(--text); padding: 4px 0; border-bottom: 0.5px solid var(--border); line-height: 1.5; }
+  .handoff-item:last-child { border-bottom: none; }
+  .handoff-item::before { content: "→ "; color: var(--green); font-weight: 600; }
+
+  /* ROTEIRO */
+  .step-pills { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1rem; }
+  .step-pill { padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 500; background: var(--bg2); border: 0.5px solid var(--border); color: var(--text2); cursor: pointer; transition: all .15s; }
+  .step-pill.active { background: var(--green); color: #fff; border-color: var(--green); }
+  .step-content { display: none; }
+  .step-content.active { display: block; }
+  .step-block { background: var(--bg2); border-radius: var(--r-md); padding: 1rem; margin-bottom: .75rem; }
+  .step-block-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: .5rem; display: flex; align-items: center; gap: 6px; }
+  .step-block-title span { background: var(--green); color: #fff; font-size: 10px; font-weight: 700; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .step-text { font-size: 12px; color: var(--text2); line-height: 1.65; }
+  .script-box { background: var(--card); border-left: 3px solid var(--green); border-radius: 0 var(--r-md) var(--r-md) 0; padding: .75rem 1rem; margin-top: .5rem; font-size: 12px; color: var(--text); font-style: italic; line-height: 1.6; }
+
+  /* PLANOS */
+  .planos-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: .6rem; margin-bottom: 1rem; }
+  @media(max-width:600px){ .planos-grid{ grid-template-columns: repeat(2,1fr); } }
+  .plano-card { background: var(--card); border: 0.5px solid var(--border); border-radius: var(--r-lg); padding: .85rem .75rem; text-align: center; cursor: pointer; transition: all .2s; position: relative; }
+  .plano-card:hover, .plano-card.active { border-color: var(--green); }
+  .plano-card.destaque { border: 2px solid var(--green); }
+  .plano-badge { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: var(--green); color: #fff; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px; white-space: nowrap; }
+  .plano-nome { font-size: 13px; font-weight: 700; color: var(--text); }
+  .plano-preco { font-size: 22px; font-weight: 700; color: var(--green); margin: 4px 0 2px; }
+  .plano-preco span { font-size: 12px; color: var(--text2); font-weight: 400; }
+  .plano-users { font-size: 11px; color: var(--text2); }
+  .plano-detail { display: none; }
+  .plano-detail.active { display: block; }
+  .feat-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 0.5px solid var(--border); font-size: 12px; }
+  .feat-row:last-child { border-bottom: none; }
+  .feat-name { color: var(--text2); }
+  .feat-val { font-weight: 600; color: var(--text); }
+  .feat-check { color: var(--green); }
+  .feat-dash { color: var(--text3); }
+  .add-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; margin-top: .75rem; }
+  @media(max-width:500px){ .add-grid{ grid-template-columns: 1fr; } }
+  .add-item { background: var(--bg2); border-radius: var(--r-md); padding: .6rem .85rem; display: flex; justify-content: space-between; align-items: center; font-size: 12px; }
+  .add-name { color: var(--text2); }
+  .add-price { font-weight: 600; color: var(--green); }
+
+  /* OBJEÇÕES */
+  .obj-item { border: 0.5px solid var(--border); border-radius: var(--r-md); overflow: hidden; margin-bottom: .5rem; }
+  .obj-header { padding: .85rem 1rem; display: flex; justify-content: space-between; align-items: center; cursor: pointer; background: var(--card); transition: background .15s; }
+  .obj-header:hover { background: var(--bg2); }
+  .obj-tag { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 10px; background: var(--bg2); color: var(--text2); flex-shrink: 0; }
+  .obj-q { font-size: 13px; font-weight: 500; color: var(--text); flex: 1; margin: 0 10px; }
+  .obj-chevron { font-size: 10px; color: var(--text2); transition: transform .2s; flex-shrink: 0; }
+  .obj-item.open .obj-chevron { transform: rotate(180deg); }
+  .obj-body { display: none; padding: .85rem 1rem; font-size: 13px; color: var(--text2); line-height: 1.65; border-top: 0.5px solid var(--border); background: var(--card); }
+  .obj-item.open .obj-body { display: block; }
+
+  /* CHECKLIST */
+  .checklist { list-style: none; }
+  .check-item { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-bottom: 0.5px solid var(--border); cursor: pointer; }
+  .check-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .check-item:first-child { padding-top: 0; }
+  .check-box { width: 18px; height: 18px; border-radius: 5px; flex-shrink: 0; margin-top: 1px; border: 1.5px solid var(--border2); background: transparent; transition: all .15s; display: flex; align-items: center; justify-content: center; }
+  .check-item.checked .check-box { background: var(--green); border-color: var(--green); }
+  .check-item.checked .check-box svg { display: block; }
+  .check-box svg { display: none; width: 10px; height: 10px; }
+  .check-label { font-size: 13px; color: var(--text); line-height: 1.5; flex: 1; }
+  .check-item.checked .check-label { color: var(--text2); text-decoration: line-through; }
+  .progress-wrap { margin-bottom: .75rem; }
+  .progress-header { display: flex; justify-content: space-between; margin-bottom: 5px; }
+  .progress-title { font-size: 12px; color: var(--text2); }
+  .progress-count { font-size: 12px; font-weight: 600; color: var(--green); }
+  .progress-track { height: 4px; background: var(--bg2); border-radius: 2px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--green); border-radius: 2px; transition: width .3s; }
+  .reset-btn { background: transparent; border: 0.5px solid var(--border2); color: var(--text2); font-size: 12px; padding: 5px 12px; border-radius: var(--r-md); cursor: pointer; transition: all .15s; }
+  .reset-btn:hover { border-color: var(--green); color: var(--green); }
+  .section-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: .75rem; }
+
+  .tip-box { background: #22C55E0F; border: 0.5px solid #22C55E33; border-radius: var(--r-md); padding: .85rem 1rem; font-size: 12px; color: var(--text); line-height: 1.6; margin-top: .75rem; }
+  .tip-box strong { color: var(--green); }
+  .footer { margin-top: 2.5rem; text-align: center; font-size: 11px; color: var(--text3); }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HERO -->
+  <div class="hero">
+    <img src="logo helena.png" alt="helena">
+    <div>
+      <div style="font-size:12px;color:#9ca3af">Playbook Closer — Vendas</div>
+    </div>
+    <div class="hero-badge">Closer Guide v1.0</div>
+    <button class="thm-btn" id="thm-btn" onclick="toggleTheme()"><span id="thm-icon">☀️</span></button>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showTab('handoff',this)">🤝 Handoff SDR</button>
+    <button class="tab-btn" onclick="showTab('roteiro',this)">🎬 Roteiro Demo</button>
+    <button class="tab-btn" onclick="showTab('planos',this)">💳 Planos</button>
+    <button class="tab-btn" onclick="showTab('objecoes',this)">🛡️ Objeções</button>
+    <button class="tab-btn" onclick="showTab('fechamento',this)">✅ Fechamento</button>
+  </div>
+
+  <!-- ===== HANDOFF ===== -->
+  <div class="section active" id="sec-handoff">
+    <p style="font-size:13px;color:var(--text2);margin-bottom:1rem;line-height:1.6">O SDR entrega o que conseguiu levantar — nem sempre virá completo, e tudo bem. O Closer entra na reunião com essas informações como ponto de partida e completa o que falta durante o próprio discovery.</p>
+    <div class="handoff-grid">
+      <div class="handoff-card">
+        <div class="handoff-label">📋 Dados básicos da empresa</div>
+        <div class="handoff-item">Nome da empresa e segmento/nicho</div>
+        <div class="handoff-item">Site ou Instagram para pesquisa prévia</div>
+        <div class="handoff-item">Número de usuários/atendentes</div>
+        <div class="handoff-item">Faz tráfego pago? (Meta Ads, Google Ads)</div>
+      </div>
+      <div class="handoff-card">
+        <div class="handoff-label">🔥 Contexto inicial</div>
+        <div class="handoff-item">Dor ou interesse que o lead mencionou</div>
+        <div class="handoff-item">Usa plataforma concorrente? Qual?</div>
+        <div class="handoff-item">API Oficial ou não oficial?</div>
+        <div class="handoff-item">Motivo de querer trocar (se souber)</div>
+      </div>
+      <div class="handoff-card">
+        <div class="handoff-label">🎯 Qualificação mínima</div>
+        <div class="handoff-item">Budget: tem ciência dos valores?</div>
+        <div class="handoff-item">Autoridade: é o decisor?</div>
+        <div class="handoff-item">Necessidade: urgência percebida</div>
+        <div class="handoff-item">Timeline: quando precisa estar rodando?</div>
+      </div>
+      <div class="handoff-card">
+        <div class="handoff-label">⚡ Interesse mencionado</div>
+        <div class="handoff-item">Central de atendimento / filas</div>
+        <div class="handoff-item">CRM / funil de vendas</div>
+        <div class="handoff-item">Chatbot / automações</div>
+        <div class="handoff-item">Disparos em massa / campanhas</div>
+      </div>
+    </div>
+    <div class="tip-box"><strong>Mindset do Closer:</strong> Informação incompleta é normal. O SDR abre a porta — o Closer qualifica e aprofunda na reunião. Use o discovery para preencher o que falta e adaptar o roteiro em tempo real.</div>
+  </div>
+
+  <!-- ===== ROTEIRO ===== -->
+  <div class="section" id="sec-roteiro">
+    <p style="font-size:13px;color:var(--text2);margin-bottom:1rem;line-height:1.6">Roteiro estruturado da demo. Cada etapa tem um objetivo claro — não pule fases.</p>
+    <div class="step-pills">
+      <div class="step-pill active" onclick="showStep('abertura',this)">1. Abertura</div>
+      <div class="step-pill" onclick="showStep('contexto',this)">2. Discovery</div>
+      <div class="step-pill" onclick="showStep('solucao',this)">3. Solução</div>
+      <div class="step-pill" onclick="showStep('demo',this)">4. Demo</div>
+      <div class="step-pill" onclick="showStep('plano',this)">5. Plano</div>
+      <div class="step-pill" onclick="showStep('fechamento',this)">6. Próx. passo</div>
+    </div>
+    <div class="step-content active" id="step-abertura">
+      <div class="step-block">
+        <div class="step-block-title"><span>1</span> Abertura — Gerar rapport (3–5 min)</div>
+        <div class="step-text">Objetivo: criar conexão, confirmar o básico que o SDR passou e alinhar a agenda. Não presuma que toda a informação está correta — use a abertura para checar.</div>
+        <div class="script-box">"Olá [nome], tudo bem? Antes de começar, quero entender um pouco mais sobre vocês para tornar essa conversa o mais útil possível. Me fala rapidinho: qual é o principal desafio de atendimento que vocês enfrentam hoje?"</div>
+      </div>
+      <div class="tip-box"><strong>Atenção:</strong> Deixe o lead falar primeiro. Mesmo que o SDR já tenha passado a dor, ouvir do próprio lead confirma ou corrige — e cria vínculo antes de qualquer tela.</div>
+    </div>
+    <div class="step-content" id="step-contexto">
+      <div class="step-block">
+        <div class="step-block-title"><span>2</span> Discovery — Entender o contexto real (8–10 min)</div>
+        <div class="step-text">O Closer faz o discovery aqui, independente do que o SDR passou. Com informação básica ou nenhuma, essas perguntas revelam o que precisa ser mostrado na demo.</div>
+      </div>
+      <div class="step-block">
+        <div class="step-block-title"><span>→</span> Operação atual</div>
+        <div class="step-text">— Como os leads chegam hoje e quem responde?<br>— Quantas pessoas atendem pelo WhatsApp?<br>— Usam um número só ou cada um tem o próprio?<br>— Têm alguma plataforma hoje ou é tudo no celular?</div>
+      </div>
+      <div class="step-block">
+        <div class="step-block-title"><span>→</span> Dor e impacto</div>
+        <div class="step-text">— Já perdeu cliente por demora no retorno?<br>— O gestor consegue acompanhar o que cada atendente respondeu?<br>— Sabe de qual campanha veio cada lead?<br>— O que acontece quando um atendente sai de férias?</div>
+      </div>
+      <div class="step-block">
+        <div class="step-block-title"><span>→</span> Contexto de decisão</div>
+        <div class="step-text">— Você é quem decide a contratação ou envolve mais alguém?<br>— Tem alguma urgência ou prazo pra resolver isso?<br>— Já chegou a pesquisar outras soluções?</div>
+      </div>
+      <div class="tip-box"><strong>Regra do discovery:</strong> Não interrompa para apresentar solução enquanto ainda está ouvindo. Quanto mais o lead fala, mais precisa fica a demo — e mais ele mesmo se convence da necessidade.</div>
+    </div>
+    <div class="step-content" id="step-solucao">
+      <div class="step-block">
+        <div class="step-block-title"><span>3</span> Posicionamento da solução (3–5 min)</div>
+        <div class="step-text">Antes de abrir o sistema, resuma o que você entendeu no discovery e conecte com o que vai mostrar. Isso prova que você ouviu e direciona a demo para o que importa.</div>
+        <div class="script-box">"Com base no que você me contou, o maior problema é [dor em 1 frase levantada no discovery]. O que vou mostrar resolve exatamente isso: a plataforma centraliza todo o atendimento, dá visibilidade pro gestor e nenhum lead fica sem resposta."</div>
+      </div>
+      <div class="tip-box"><strong>Números da plataforma:</strong> +6.000 contas ativas · +111M mensagens/mês · +30K atendentes · +18M conversas/mês</div>
+    </div>
+    <div class="step-content" id="step-demo">
+      <div class="step-block">
+        <div class="step-block-title"><span>4</span> Demo — Mostrar o sistema (15–20 min)</div>
+        <div class="step-text">Mostre sempre na ordem: <strong>problema → funcionalidade → resultado</strong>. Nunca mostre feature por feature.</div>
+      </div>
+      <div class="step-block">
+        <div class="step-block-title"><span>→</span> Central de atendimento</div>
+        <div class="step-text">Mostre as filas (Novos, Meus, Outros), distribuição automática, etiquetas e histórico.<br><br><em>Conecte com a dor:</em> "Aqui o gestor vê tudo em tempo real — quem atendeu, quando e como."</div>
+      </div>
+      <div class="step-block">
+        <div class="step-block-title"><span>→</span> CRM Kanban</div>
+        <div class="step-text">Mostre o funil visual, cards com histórico, data de vencimento e acesso direto à conversa.<br><br><em>Conecte com a dor:</em> "Nenhum lead cai no esquecimento — cada card tem o próximo passo definido."</div>
+      </div>
+      <div class="step-block">
+        <div class="step-block-title"><span>→</span> Chatbot + Automações</div>
+        <div class="step-text">Mostre o builder visual, botões interativos e ações automáticas (etiquetas, transferência de equipe).<br><br><em>Conecte com a dor:</em> "O bot faz a triagem e já coleta as informações antes do atendente assumir."</div>
+      </div>
+    </div>
+    <div class="step-content" id="step-plano">
+      <div class="step-block">
+        <div class="step-block-title"><span>5</span> Apresentação do plano (5–8 min)</div>
+        <div class="step-text">Não apresente todos os planos. Apresente o plano certo para o contexto do lead.</div>
+        <div class="script-box">"Com base no que você me contou — [X] atendentes e foco em [funcionalidade] — o plano que mais faz sentido pra vocês é o [plano]. Ele já inclui [features]. A taxa de implantação cobre todo o onboarding com nosso time."</div>
+      </div>
+      <div class="tip-box"><strong>Regra de ouro:</strong> Comece pelo plano ideal, não pelo mais barato. Descer de plano é fácil; subir gera atrito.</div>
+    </div>
+    <div class="step-content" id="step-fechamento">
+      <div class="step-block">
+        <div class="step-block-title"><span>6</span> Próximo passo — Não saia sem uma data (3–5 min)</div>
+        <div class="step-text">Objetivo: sair com um compromisso claro — seja o fechamento, uma nova reunião com o decisor ou um prazo para resposta.</div>
+        <div class="script-box">"Faz sentido pro que vocês precisam? Qual é o próximo passo pra gente avançar? Posso já deixar agendada a reunião de Kickoff para a semana que vem."</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PLANOS ===== -->
+  <div class="section" id="sec-planos">
+    <p style="font-size:13px;color:var(--text2);margin-bottom:1rem;line-height:1.6">Selecione o plano para ver detalhes e usar como referência durante a demo.</p>
+    <div class="planos-grid">
+      <div class="plano-card" onclick="showPlano('essential',this)">
+        <div class="plano-nome">Essential</div>
+        <div class="plano-preco">R$487<span>/mês</span></div>
+        <div class="plano-users">3 usuários</div>
+      </div>
+      <div class="plano-card" onclick="showPlano('pro',this)">
+        <div class="plano-nome">Pro</div>
+        <div class="plano-preco">R$687<span>/mês</span></div>
+        <div class="plano-users">5 usuários</div>
+      </div>
+      <div class="plano-card destaque active" onclick="showPlano('plus',this)">
+        <div class="plano-badge">⭐ Mais vendido</div>
+        <div class="plano-nome">Plus+</div>
+        <div class="plano-preco">R$987<span>/mês</span></div>
+        <div class="plano-users">10 usuários</div>
+      </div>
+      <div class="plano-card" onclick="showPlano('advanced',this)">
+        <div class="plano-nome">Advanced</div>
+        <div class="plano-preco">R$1.487<span>/mês</span></div>
+        <div class="plano-users">20 usuários</div>
+      </div>
+    </div>
+
+    <div class="plano-detail" id="plano-essential">
+      <div class="card">
+        <div class="card-title"><div class="card-icon"><svg fill="none" viewBox="0 0 14 14"><path d="M2 7h10M7 2v10" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg></div>Essential — R$487/mês · 3 usuários · só WhatsApp</div>
+        <div class="feat-row"><span class="feat-name">Central de atendimento</span><span class="feat-check">✓</span></div>
+        <div class="feat-row"><span class="feat-name">CRM</span><span class="feat-dash">—</span></div>
+        <div class="feat-row"><span class="feat-name">Disparo de mensagens</span><span class="feat-dash">—</span></div>
+        <div class="feat-row"><span class="feat-name">Distribuição automática</span><span class="feat-dash">—</span></div>
+        <div class="feat-row"><span class="feat-name">Sequências</span><span class="feat-check">✓</span></div>
+        <div class="feat-row"><span class="feat-name">Chatbot</span><span class="feat-check">✓</span></div>
+        <div class="feat-row"><span class="feat-name">Integrações (Webhooks + API)</span><span class="feat-dash">—</span></div>
+        <div class="feat-row"><span class="feat-name">Taxa de implantação</span><span class="feat-val">R$1.090</span></div>
+        <div class="tip-box" style="margin-top:.75rem"><strong>Quando indicar:</strong> Operação pequena, 1–3 atendentes, precisa de atendimento organizado mas ainda não usa CRM nem disparos.</div>
+      </div>
+    </div>
+    <div class="plano-detail" id="plano-pro">
+      <div class="card">
+        <div class="card-title"><div class="card-icon"><svg fill="none" viewBox="0 0 14 14"><path d="M2 7h10M7 2v10" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg></div>Pro — R$687/mês · 5 usuários · WhatsApp + Instagram + Messenger</div>
+        <div class="feat-row"><span class="feat-name">Central de atendimento</span><span class="feat-check">✓</span></div>
+        <div class="feat-row"><span class="feat-name">CRM</span><span class="feat-check">✓</span></div>
+        <div class="feat-row"><span class="feat-name">Disparo de mensagens</span><span class="feat-check">✓</span></div>
+        <div class="feat-row"><span class="feat-name">Mensagem agendada</span><span class="feat-check">✓</span></div>
+        <div class="feat-row"><span class="feat-name">Distribuição automática</span><span class="feat-dash">—</span></div>
+        <div class="feat-row"><span class="feat-name">Integrações (Webhooks + API)</span><span class="feat-dash">—</span></div>
+        <div class="feat-row"><span class="feat-name">Taxa de implantação</span><span class="feat-val">R$1.490</span></div>
+        <div class="tip-box" style="margin-top:.75rem"><strong>Quando indicar:</strong> Precisa de CRM e disparos. Equipe de 3–5 pessoas.</div>
+      </div>
+    </div>
+    <div class="plano-detail active" id="plano-plus">
+      <div class="card">
+        <div class="card-title"><div class="card-icon"><svg fill="none" viewBox="0 0 14 14"><path d="M2 7h10M7 2v10" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg></div>Plus+ — R$987/mês · 10 usuários · todos os canais ⭐</div>
+        <div class="feat-row"><span class="feat-name">Central de atendimento</span><span class="feat-check">✓</span></div>
+        <div class="feat-row"><span class="feat-name">CRM</span><span class="feat-check">✓</span></div>
+        <div class="feat-row"><span class="feat-name">Disparo de mensagens</span><span class="feat-check">✓</span></div>
+        <div class="feat-row"><span class="feat-name">Distribuição automática</span><span class="feat-check">✓</span></div>
+        <div class="feat-row"><span class="feat-name">Carteiras de clientes</span><span class="feat-check">✓</span></div>
+        <div class="feat-row"><span class="feat-name">Integrações (Webhooks + API)</span><span class="feat-check">✓</span></div>
+        <div class="feat-row"><span class="feat-name">Taxa de implantação</span><span class="feat-val">R$1.990</span></div>
+        <div class="tip-box" style="margin-top:.75rem"><strong>Quando indicar:</strong> Operação com equipe estruturada — melhor custo-benefício por usuário.</div>
+      </div>
+    </div>
+    <div class="plano-detail" id="plano-advanced">
+      <div class="card">
+        <div class="card-title"><div class="card-icon"><svg fill="none" viewBox="0 0 14 14"><path d="M2 7h10M7 2v10" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg></div>Advanced — R$1.487/mês · 20 usuários · todos os canais</div>
+        <div class="feat-row"><span class="feat-name">Tudo do Plus+</span><span class="feat-check">✓</span></div>
+        <div class="feat-row"><span class="feat-name">20 usuários inclusos</span><span class="feat-check">✓</span></div>
+        <div class="feat-row"><span class="feat-name">Usuário adicional</span><span class="feat-val">R$47/mês</span></div>
+        <div class="feat-row"><span class="feat-name">Taxa de implantação</span><span class="feat-val">R$2.499</span></div>
+        <div class="tip-box" style="margin-top:.75rem"><strong>Quando indicar:</strong> Empresa grande, equipe de 10–20+ atendentes.</div>
+      </div>
+    </div>
+
+    <p class="section-label" style="margin-top:1rem">Adicionais disponíveis</p>
+    <div class="add-grid">
+      <div class="add-item"><span class="add-name">Automação Ilimitada</span><span class="add-price">R$147/mês</span></div>
+      <div class="add-item"><span class="add-name">WhatsApp Adicional</span><span class="add-price">R$89/mês</span></div>
+      <div class="add-item"><span class="add-name">Direct ou Messenger Adicional</span><span class="add-price">R$69/mês</span></div>
+      <div class="add-item"><span class="add-name">Integração Banco ASAAS</span><span class="add-price">R$99/mês</span></div>
+      <div class="add-item"><span class="add-name">Transcrição de áudio com IA</span><span class="add-price">R$6,99/usuário/mês</span></div>
+    </div>
+  </div>
+
+  <!-- ===== OBJEÇÕES ===== -->
+  <div class="section" id="sec-objecoes">
+    <p style="font-size:13px;color:var(--text2);margin-bottom:1rem;line-height:1.6">Objeções mais comuns na etapa de fechamento. Nunca rebata — acolha, reframe e conecte ao valor.</p>
+    <p class="section-label">Preço e valor</p>
+    <div class="obj-item" onclick="toggleObj(this)">
+      <div class="obj-header"><span class="obj-tag">💰 Preço</span><span class="obj-q">"Está caro, tem opção mais barata no mercado…"</span><span class="obj-chevron">▼</span></div>
+      <div class="obj-body">Entendo. Quando olhamos plataformas oficiais — com API Oficial da META, suporte, CS dedicado e onboarding completo — estamos no melhor custo-benefício do mercado. Plataformas mais baratas geralmente usam API não oficial, o que coloca o número em risco. Qual plataforma está sendo comparada?</div>
+    </div>
+    <div class="obj-item" onclick="toggleObj(this)">
+      <div class="obj-header"><span class="obj-tag">💰 Implantação</span><span class="obj-q">"Por que tem taxa de implantação?"</span><span class="obj-chevron">▼</span></div>
+      <div class="obj-body">A taxa cobre todo o processo de onboarding: configuração do ambiente, conexão com a API Oficial da META, treinamento da equipe e acompanhamento nas primeiras semanas. A maioria das plataformas deixa isso por conta do cliente — aqui você tem um time dedicado.</div>
+    </div>
+    <div class="obj-item" onclick="toggleObj(this)">
+      <div class="obj-header"><span class="obj-tag">💰 Plano</span><span class="obj-q">"Quero começar pelo plano mais barato e depois upgrade…"</span><span class="obj-chevron">▼</span></div>
+      <div class="obj-body">Faz sentido querer testar antes de escalar. Mas se você precisa de [CRM / disparos / distribuição automática] para resolver [dor principal], o Essential não vai resolver. A diferença de investimento entre os planos é pequena comparada ao custo de perder leads.</div>
+    </div>
+    <p class="section-label" style="margin-top:1.25rem">Decisão e timing</p>
+    <div class="obj-item" onclick="toggleObj(this)">
+      <div class="obj-header"><span class="obj-tag">⏳ Prazo</span><span class="obj-q">"Preciso pensar mais, não estou pronto para decidir…"</span><span class="obj-chevron">▼</span></div>
+      <div class="obj-body">Claro, faz sentido. O que falta para você se sentir seguro? Se for dúvida técnica, posso responder agora. Se for aprovação interna, posso preparar um resumo personalizado. O que seria um próximo passo confortável?</div>
+    </div>
+    <div class="obj-item" onclick="toggleObj(this)">
+      <div class="obj-header"><span class="obj-tag">👥 Decisor</span><span class="obj-q">"Preciso consultar meu sócio / financeiro / diretor…"</span><span class="obj-chevron">▼</span></div>
+      <div class="obj-body">Perfeito. Posso preparar um material resumido com o que faz sentido para a operação de vocês — já formatado para você apresentar internamente. E se quiser, marcamos uma call rápida com todos juntos. Quando seria possível?</div>
+    </div>
+    <div class="obj-item" onclick="toggleObj(this)">
+      <div class="obj-header"><span class="obj-tag">🔌 API</span><span class="obj-q">"Uso API não oficial e nunca tive problema…"</span><span class="obj-chevron">▼</span></div>
+      <div class="obj-body">Fico feliz que não teve problema. Mas o risco existe — a META bloqueia contas sem aviso e sem possibilidade de recurso. Quando isso acontece, você perde o número, o histórico e toda a base. Com a API Oficial, isso não acontece. Quanto vale a segurança do seu número?</div>
+    </div>
+  </div>
+
+  <!-- ===== FECHAMENTO ===== -->
+  <div class="section" id="sec-fechamento">
+    <div class="card">
+      <div class="section-row">
+        <div class="card-title" style="margin-bottom:0">
+          <div class="card-icon"><svg fill="none" viewBox="0 0 14 14"><rect x="2" y="3" width="10" height="9" rx="2" stroke="white" stroke-width="1.3"/><path d="M5 1v2M9 1v2M2 6h10" stroke="white" stroke-width="1.3" stroke-linecap="round"/></svg></div>
+          Checklist de fechamento
+        </div>
+        <button class="reset-btn" onclick="resetCheck()">Limpar</button>
+      </div>
+      <div class="progress-wrap" style="margin-top:.75rem">
+        <div class="progress-header"><span class="progress-title">Progresso</span><span class="progress-count" id="fech-count">0/8</span></div>
+        <div class="progress-track"><div class="progress-fill" id="fech-bar" style="width:0%"></div></div>
+      </div>
+      <ul class="checklist" id="fech-list">
+        <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="check-label">Dor principal foi confirmada e verbalizada pelo lead</span></li>
+        <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="check-label">Demo focada na dor — não foi tour completo de features</span></li>
+        <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="check-label">Plano correto apresentado com base no perfil do lead</span></li>
+        <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="check-label">Taxa de implantação explicada e justificada</span></li>
+        <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="check-label">Objeções levantadas foram tratadas</span></li>
+        <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="check-label">Decisor estava presente ou foi identificado</span></li>
+        <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="check-label">Próximo passo definido com data (fechamento ou nova call)</span></li>
+        <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="check-label">Registro atualizado no CRM com status e próximo passo</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer"><p>helenaCRM · Playbook Closer v1.0</p></div>
+</div>
+
+<script>
+// THEME
+(function(){
+  if(localStorage.getItem('htheme')==='light') document.body.classList.add('light');
+  updateThemeBtn();
+})();
+function toggleTheme(){
+  document.body.classList.toggle('light');
+  localStorage.setItem('htheme', document.body.classList.contains('light') ? 'light' : 'dark');
+  updateThemeBtn();
+}
+function updateThemeBtn(){
+  var icon = document.getElementById('thm-icon');
+  if(icon) icon.textContent = document.body.classList.contains('light') ? '🌙' : '☀️';
+}
+function showTab(id, btn) {
+  document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});
+  document.querySelectorAll('.section').forEach(function(s){s.classList.remove('active')});
+  document.getElementById('sec-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+function showStep(id, pill) {
+  document.querySelectorAll('.step-pill').forEach(function(p){p.classList.remove('active')});
+  document.querySelectorAll('.step-content').forEach(function(c){c.classList.remove('active')});
+  document.getElementById('step-'+id).classList.add('active');
+  pill.classList.add('active');
+}
+function showPlano(id, card) {
+  document.querySelectorAll('.plano-card').forEach(function(c){c.classList.remove('active')});
+  document.querySelectorAll('.plano-detail').forEach(function(d){d.classList.remove('active')});
+  document.getElementById('plano-'+id).classList.add('active');
+  card.classList.add('active');
+}
+function toggleObj(el) { el.classList.toggle('open'); }
+function toggleCheck(el) {
+  el.classList.toggle('checked');
+  var list = document.getElementById('fech-list');
+  var total = list.querySelectorAll('.check-item').length;
+  var done = list.querySelectorAll('.check-item.checked').length;
+  document.getElementById('fech-count').textContent = done+'/'+total;
+  document.getElementById('fech-bar').style.width = Math.round(done/total*100)+'%';
+}
+function resetCheck() {
+  document.getElementById('fech-list').querySelectorAll('.check-item').forEach(function(i){i.classList.remove('checked')});
+  document.getElementById('fech-count').textContent = '0/8';
+  document.getElementById('fech-bar').style.width = '0%';
+}
+</script>
+</body>
+</html>

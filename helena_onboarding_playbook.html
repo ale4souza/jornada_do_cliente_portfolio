@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Helena — Playbook de Onboarding</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root { --green:#1FDB5B;--green-dark:#17b849;--black:#0a0a0a;--white:#ffffff;--muted:#888;--card-bg:#141414;--card-border:rgba(255,255,255,0.07);--bg:#0a0a0a;--text:#fff;--text2:rgba(255,255,255,.42);--text3:rgba(255,255,255,.18); }
+  body.light{ --bg:#f8f8f6;--card-bg:#fff;--card-border:rgba(0,0,0,.09);--text:#1a1a1a;--text2:#6b6b66;--text3:#bbb; }
+  *{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+  body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;transition:background .25s,color .25s}
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 48px;display:flex;align-items:center;justify-content:space-between;background:rgba(10,10,10,0.93);backdrop-filter:blur(18px);border-bottom:1px solid rgba(255,255,255,0.06)}
+  body.light nav{background:rgba(248,248,246,.95);border-bottom-color:rgba(0,0,0,.08)}
+  .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+  .nav-logo-text{font-size:20px;font-weight:700;color:#fff}
+  body.light .nav-logo-text{color:#0a0a0a}
+  .nav-links{display:flex;gap:28px;list-style:none}
+  .nav-links a{font-size:13px;color:rgba(255,255,255,0.5);text-decoration:none;transition:color 0.2s;white-space:nowrap}
+  body.light .nav-links a{color:rgba(0,0,0,.45)}
+  .nav-links a:hover,.nav-links a.active{color:var(--green)}
+  .nav-right{display:flex;align-items:center;gap:10px}
+
+  /* THEME BUTTON */
+  .thm-btn{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:5px 12px;cursor:pointer;font-size:14px;transition:all .15s;white-space:nowrap}
+  .thm-btn:hover{border-color:var(--green);background:rgba(31,219,91,.1)}
+  body.light .thm-btn{background:rgba(0,0,0,0.06);border-color:rgba(0,0,0,0.15)}
+
+  .section-inner{max-width:1160px;margin:0 auto;padding:0 48px}
+  section{padding:110px 0;border-top:1px solid rgba(255,255,255,0.05)}
+  body.light section{border-top-color:rgba(0,0,0,.06)}
+  section:first-of-type{border-top:none}
+  .section-tag{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--green);margin-bottom:14px}
+  .section-tag::before{content:"";width:22px;height:2px;background:var(--green)}
+  .section-title{font-size:clamp(28px,4vw,48px);font-weight:800;line-height:1.1;letter-spacing:-0.025em;color:var(--text);margin-bottom:14px}
+  .section-title span{color:var(--green)}
+  .section-sub{font-size:15px;color:var(--text2);line-height:1.75;max-width:560px}
+  .section-header{margin-bottom:64px}
+  #home{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;padding-top:80px}
+  .hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 65% 40%,rgba(31,219,91,0.07) 0%,transparent 70%)}
+  .hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.022) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.022) 1px,transparent 1px);background-size:56px 56px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 0%,transparent 100%)}
+  .hero-content{position:relative;z-index:2;max-width:1160px;margin:0 auto;padding:0 48px;display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center;width:100%}
+  .hero-tag{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;background:rgba(31,219,91,0.1);border:1px solid rgba(31,219,91,0.22);border-radius:4px;font-size:11px;font-weight:600;letter-spacing:0.08em;color:var(--green);text-transform:uppercase;margin-bottom:24px}
+  .hero-tag::before{content:"";width:6px;height:6px;background:var(--green);border-radius:50%;animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+  .hero-title{font-size:clamp(40px,5.5vw,72px);font-weight:800;line-height:1.0;letter-spacing:-0.03em;margin-bottom:20px;color:var(--text)}
+  .hero-title span{color:var(--green)}
+  .hero-sub{font-size:16px;font-weight:300;line-height:1.75;color:var(--text2);max-width:420px;margin-bottom:36px}
+  .hero-btns{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+  .btn-primary{padding:13px 28px;background:var(--green);color:#0a0a0a;border-radius:4px;font-size:14px;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all 0.2s}
+  .btn-primary:hover{background:var(--green-dark);transform:translateY(-2px);box-shadow:0 10px 28px rgba(31,219,91,0.28)}
+  .btn-ghost{padding:13px 28px;border:1px solid rgba(255,255,255,0.14);color:rgba(255,255,255,0.65);border-radius:4px;font-size:14px;text-decoration:none;transition:all 0.2s}
+  body.light .btn-ghost{border-color:rgba(0,0,0,.15);color:rgba(0,0,0,.55)}
+  .btn-ghost:hover{border-color:rgba(255,255,255,0.3);color:#fff}
+  body.light .btn-ghost:hover{border-color:rgba(0,0,0,.3);color:#000}
+  .hero-visual{display:flex;flex-direction:column;gap:12px}
+  .hero-stat-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .hero-stat{background:var(--card-bg);border:1px solid var(--card-border);border-radius:14px;padding:20px 22px}
+  .hero-stat.accent{background:var(--green);border-color:var(--green)}
+  .hero-stat.accent .stat-num,.hero-stat.accent .stat-label{color:#0a0a0a}
+  .stat-num{font-size:32px;font-weight:800;color:var(--text);line-height:1;margin-bottom:5px}
+  .stat-label{font-size:11px;color:var(--text2)}
+  .hero-flow{background:var(--card-bg);border:1px solid var(--card-border);border-radius:14px;padding:18px 22px}
+  .flow-title{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+  .flow-steps{display:flex;align-items:center;gap:6px}
+  .flow-dot{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:var(--muted);flex-shrink:0}
+  .flow-dot.active{background:var(--green);border-color:var(--green);color:#0a0a0a}
+  .flow-line{flex:1;height:1px;background:rgba(255,255,255,0.07)}
+  .flow-line.done{background:var(--green)}
+  #overview{background:var(--bg)}
+  .flow-timeline{display:grid;grid-template-columns:repeat(6,1fr);gap:0;position:relative}
+  .flow-timeline::before{content:"";position:absolute;top:34px;left:calc(100%/12);right:calc(100%/12);height:1px;background:linear-gradient(90deg,transparent,var(--green),rgba(31,219,91,0.3),transparent)}
+  .flow-step{display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 8px;cursor:pointer}
+  .step-num{width:68px;height:68px;border-radius:50%;background:var(--card-bg);border:1px solid var(--card-border);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;color:var(--muted);margin-bottom:16px;position:relative;z-index:2;transition:all 0.3s}
+  .flow-step:hover .step-num{background:var(--green);border-color:var(--green);color:#0a0a0a;transform:scale(1.1);box-shadow:0 0 36px rgba(31,219,91,0.35)}
+  .step-name{font-size:12px;font-weight:700;color:var(--text);margin-bottom:6px}
+  .step-desc{font-size:11px;color:var(--text2);line-height:1.5}
+  #processo{background:var(--bg)}
+  .step-detail{margin-bottom:72px}
+  .step-detail:last-child{margin-bottom:0}
+  .step-detail-header{display:flex;align-items:flex-start;gap:24px;padding-bottom:32px;margin-bottom:32px;border-bottom:1px solid rgba(255,255,255,0.06)}
+  body.light .step-detail-header{border-bottom-color:rgba(0,0,0,.07)}
+  .step-badge{width:56px;height:56px;flex-shrink:0;border-radius:14px;background:rgba(31,219,91,0.1);border:1px solid rgba(31,219,91,0.2);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:var(--green)}
+  .step-detail-title{font-size:26px;font-weight:800;color:var(--text);margin-bottom:6px}
+  .step-detail-sub{font-size:14px;color:var(--text2);line-height:1.65;max-width:600px}
+  .step-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+  .step-tag{padding:4px 12px;border-radius:4px;background:rgba(31,219,91,0.08);border:1px solid rgba(31,219,91,0.18);font-size:11px;color:var(--green);font-weight:500}
+  .step-detail-body{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .detail-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:14px;padding:22px}
+  .detail-card-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+  .detail-card-text{font-size:13px;color:var(--text2);line-height:1.65}
+  .detail-checklist{list-style:none;display:flex;flex-direction:column;gap:8px;margin-top:6px}
+  .detail-checklist li{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--text2);line-height:1.5;cursor:pointer;user-select:none;padding:6px 8px;border-radius:7px;border:1px solid transparent;transition:all 0.2s}
+  .detail-checklist li:hover{background:rgba(255,255,255,0.03);border-color:rgba(255,255,255,0.06)}
+  body.light .detail-checklist li:hover{background:rgba(0,0,0,.03)}
+  .detail-checklist li.done{color:var(--text3);text-decoration:line-through;border-color:rgba(31,219,91,0.15);background:rgba(31,219,91,0.03)}
+  .detail-checklist li::before{content:"";width:16px;height:16px;flex-shrink:0;margin-top:1px;border-radius:4px;background:rgba(31,219,91,0.1);border:1px solid rgba(31,219,91,0.22);background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 10 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 4L4 7L9 1' stroke='%231FDB5B' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:center;background-size:9px}
+  .detail-checklist li.done::before{background-color:var(--green);border-color:var(--green)}
+  .detail-card.full{grid-column:span 2}
+  .detail-card.accent{background:rgba(31,219,91,0.05);border-color:rgba(31,219,91,0.16)}
+  .api-section{grid-column:span 2}
+  .api-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+  .api-tab{padding:7px 16px;border-radius:4px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.45);background:transparent;transition:all 0.2s;white-space:nowrap}
+  body.light .api-tab{border-color:rgba(0,0,0,.12);color:rgba(0,0,0,.45)}
+  .api-tab.active{background:var(--green);border-color:var(--green);color:#0a0a0a;font-weight:600}
+  .api-panel{display:none}
+  .api-panel.active{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .api-item{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;background:rgba(255,255,255,0.03);border-radius:9px;border:1px solid rgba(255,255,255,0.06);cursor:pointer;transition:all 0.2s}
+  .api-item:hover{border-color:rgba(31,219,91,0.2)}
+  .api-item.checked{border-color:rgba(31,219,91,0.22);background:rgba(31,219,91,0.04)}
+  body.light .api-item{background:rgba(0,0,0,.03);border-color:rgba(0,0,0,.06)}
+  .api-item::before{content:"";width:14px;height:14px;flex-shrink:0;margin-top:2px;border-radius:3px;background:rgba(31,219,91,0.1);border:1px solid rgba(31,219,91,0.22);transition:all 0.15s}
+  .api-item.checked::before{background-color:#1FDB5B;border-color:#1FDB5B;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 10 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 4L4 7L9 1' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:center;background-size:8px}
+  .api-item-text{font-size:12px;color:var(--text2);line-height:1.55}
+  .api-item.checked .api-item-text{color:var(--text3);text-decoration:line-through}
+  .api-warn{grid-column:span 2;padding:11px 15px;background:rgba(255,170,0,0.07);border:1px solid rgba(255,170,0,0.2);border-radius:9px;font-size:12px;color:rgba(255,190,0,0.8)}
+  #kickoff{background:var(--bg)}
+  .kickoff-layout{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start}
+  .agenda-list{display:flex;flex-direction:column;gap:4px}
+  .agenda-item{display:flex;align-items:flex-start;gap:16px;padding:16px 20px;border-radius:12px;border:1px solid transparent;transition:all 0.2s;cursor:pointer}
+  .agenda-item:hover{background:rgba(255,255,255,0.03);border-color:rgba(255,255,255,0.06)}
+  body.light .agenda-item:hover{background:rgba(0,0,0,.03)}
+  .agenda-item.active{background:rgba(31,219,91,0.07);border-color:rgba(31,219,91,0.2)}
+  .agenda-num{width:32px;height:32px;flex-shrink:0;border-radius:50%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--muted);transition:all 0.2s}
+  .agenda-item.active .agenda-num,.agenda-item:hover .agenda-num{background:var(--green);border-color:var(--green);color:#0a0a0a}
+  .agenda-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:3px}
+  .agenda-desc{font-size:12px;color:var(--text2);line-height:1.55}
+  .agenda-time{margin-left:auto;flex-shrink:0;font-size:10px;font-weight:600;color:var(--muted);padding:3px 9px;background:rgba(255,255,255,0.04);border-radius:4px;align-self:flex-start;white-space:nowrap}
+  .kickoff-info{display:flex;flex-direction:column;gap:14px}
+  .info-block{background:var(--card-bg);border:1px solid var(--card-border);border-radius:14px;padding:22px}
+  .info-block-title{font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--green);margin-bottom:12px}
+  .info-block-text{font-size:13px;color:var(--text2);line-height:1.7}
+  .checklist{list-style:none;display:flex;flex-direction:column;gap:9px}
+  .checklist li{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--text2);line-height:1.5}
+  .checklist li::before{content:"";width:16px;height:16px;flex-shrink:0;margin-top:1px;border-radius:4px;background:rgba(31,219,91,0.1);border:1px solid rgba(31,219,91,0.22);background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 10 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 4L4 7L9 1' stroke='%231FDB5B' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:center;background-size:9px}
+  #checklist{background:var(--bg)}
+  .checklist-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:36px}
+  .cl-tab{padding:9px 20px;border-radius:4px;font-size:13px;font-weight:500;cursor:pointer;border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.45);background:transparent;transition:all 0.2s;white-space:nowrap}
+  body.light .cl-tab{border-color:rgba(0,0,0,.1);color:rgba(0,0,0,.45)}
+  .cl-tab:hover{border-color:rgba(31,219,91,0.3);color:var(--green)}
+  .cl-tab.active{background:var(--green);border-color:var(--green);color:#0a0a0a;font-weight:600}
+  .cl-panel{display:none}
+  .cl-panel.active{display:block}
+  .cl-section{margin-bottom:28px}
+  .cl-section-title{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--green);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid rgba(31,219,91,0.15)}
+  .cl-items{display:flex;flex-direction:column;gap:6px}
+  .cl-item{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;background:var(--card-bg);border:1px solid var(--card-border);border-radius:10px;transition:border-color 0.2s;cursor:pointer;user-select:none}
+  .cl-item:hover{border-color:rgba(31,219,91,0.2)}
+  .cl-item.checked{border-color:rgba(31,219,91,0.22);background:rgba(31,219,91,0.04)}
+  .cl-checkbox{width:18px;height:18px;flex-shrink:0;margin-top:1px;border-radius:5px;border:1.5px solid rgba(255,255,255,0.18);background:transparent;transition:all 0.2s;position:relative}
+  body.light .cl-checkbox{border-color:rgba(0,0,0,.2)}
+  .cl-item.checked .cl-checkbox{background:var(--green);border-color:var(--green)}
+  .cl-item.checked .cl-checkbox::after{content:"";position:absolute;top:2px;left:5px;width:5px;height:8px;border:2px solid #0a0a0a;border-top:none;border-left:none;transform:rotate(45deg)}
+  .cl-item-text{font-size:13px;color:var(--text2);line-height:1.5;flex:1}
+  .cl-item.checked .cl-item-text{color:var(--text3);text-decoration:line-through}
+  .cl-progress{display:flex;align-items:center;gap:14px;margin-bottom:24px;padding:14px 18px;background:var(--card-bg);border:1px solid var(--card-border);border-radius:12px}
+  .cl-progress-bar-wrap{flex:1;height:5px;background:rgba(255,255,255,0.07);border-radius:3px}
+  body.light .cl-progress-bar-wrap{background:rgba(0,0,0,.07)}
+  .cl-progress-bar{height:100%;border-radius:3px;background:var(--green);transition:width 0.4s}
+  .cl-progress-text{font-size:12px;color:var(--muted);white-space:nowrap}
+  .cl-progress-pct{font-size:14px;font-weight:700;color:var(--green);min-width:36px;text-align:right}
+  #materiais{background:var(--bg)}
+  .materials-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  .material-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:14px;padding:24px 22px;display:flex;flex-direction:column;transition:all 0.3s}
+  .material-card:hover{border-color:rgba(31,219,91,0.25);transform:translateY(-3px)}
+  .material-icon{width:48px;height:48px;border-radius:12px;background:rgba(31,219,91,0.09);border:1px solid rgba(31,219,91,0.15);display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:18px}
+  .material-title{font-size:15px;font-weight:700;color:var(--text);margin-bottom:7px}
+  .material-desc{font-size:12px;color:var(--text2);line-height:1.6;flex:1;margin-bottom:18px}
+  .material-btn{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--green);border-top:1px solid rgba(255,255,255,0.05);padding-top:14px;text-decoration:none;transition:gap 0.2s}
+  body.light .material-btn{border-top-color:rgba(0,0,0,.06)}
+  .material-btn:hover{gap:10px}
+  #boas-praticas{background:var(--bg)}
+  .practices-layout{display:grid;grid-template-columns:1fr 2fr;gap:72px;align-items:start}
+  .practices-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .practice-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:14px;padding:24px;transition:all 0.3s}
+  .practice-card:first-child{grid-column:span 2;background:rgba(31,219,91,0.06);border-color:rgba(31,219,91,0.18)}
+  .practice-card:hover{border-color:rgba(31,219,91,0.2);transform:translateY(-2px)}
+  .practice-icon{font-size:24px;margin-bottom:12px}
+  .practice-title{font-size:15px;font-weight:700;color:var(--text);margin-bottom:7px}
+  .practice-desc{font-size:13px;color:var(--text2);line-height:1.65}
+  .aside-title{font-size:34px;font-weight:800;line-height:1.15;letter-spacing:-0.025em;margin-bottom:16px;color:var(--text)}
+  .aside-desc{font-size:14px;color:var(--text2);line-height:1.75;margin-bottom:28px}
+  .metric-row{display:flex;flex-direction:column;gap:10px}
+  .metric{display:flex;align-items:center;gap:14px;padding:14px 18px;background:var(--card-bg);border:1px solid var(--card-border);border-radius:10px}
+  .metric-bar-wrap{flex:1;height:4px;background:rgba(255,255,255,0.07);border-radius:2px}
+  body.light .metric-bar-wrap{background:rgba(0,0,0,.07)}
+  .metric-bar{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--green),rgba(31,219,91,0.4))}
+  .metric-label{font-size:12px;color:var(--text2);min-width:155px}
+  .metric-val{font-size:14px;font-weight:700;color:var(--green);min-width:36px;text-align:right}
+  footer{background:var(--bg);padding:36px 48px;border-top:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:space-between}
+  body.light footer{border-top-color:rgba(0,0,0,.07)}
+  .footer-logo{display:flex;align-items:center;gap:10px}
+  .footer-logo-text{font-size:16px;font-weight:700;color:var(--text)}
+  .footer-copy{font-size:12px;color:var(--text3)}
+  .footer-links{display:flex;gap:22px}
+  .footer-links a{font-size:12px;color:var(--text3);text-decoration:none;transition:color 0.2s}
+  .footer-links a:hover{color:var(--green)}
+  ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:3px}::-webkit-scrollbar-thumb:hover{background:var(--green)}
+  @media(max-width:1024px){nav{padding:16px 24px}.nav-links{display:none}.section-inner{padding:0 24px}.hero-content{grid-template-columns:1fr}.hero-visual{display:none}.flow-timeline{grid-template-columns:repeat(3,1fr)}.flow-timeline::before{display:none}.step-detail-body{grid-template-columns:1fr}.detail-card.full,.api-section{grid-column:span 1}.api-panel.active{grid-template-columns:1fr}.api-warn{grid-column:span 1}.kickoff-layout,.practices-layout{grid-template-columns:1fr}.materials-grid{grid-template-columns:1fr 1fr}footer{flex-direction:column;gap:16px;padding:28px 24px;text-align:center}}
+  @media(max-width:640px){section{padding:80px 0}.flow-timeline{grid-template-columns:1fr 1fr}.materials-grid{grid-template-columns:1fr}.practices-grid{grid-template-columns:1fr}.practice-card:first-child{grid-column:span 1}.hero-btns{flex-direction:column;align-items:flex-start}.checklist-tabs{gap:6px}.cl-tab{font-size:12px;padding:7px 14px}.api-tabs{gap:6px}.api-tab{font-size:11px;padding:6px 12px}}
+</style>
+</head>
+<body>
+<nav>
+  <a href="#home" class="nav-logo">
+    <img src="logo helena.png" alt="helena" style="height:28px;width:auto">
+  </a>
+  <ul class="nav-links">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#processo">Etapas</a></li>
+    <li><a href="#checklist">Checklist</a></li>
+    <li><a href="#boas-praticas">Boas Práticas</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="thm-btn" id="thm-btn" onclick="toggleTheme()"><span id="thm-icon">☀️</span></button>
+  </div>
+</nav>
+
+<section id="home" style="border-top:none">
+  <div class="hero-bg"></div><div class="hero-grid"></div>
+  <div class="hero-content">
+    <div>
+      <div class="hero-tag">Playbook de Onboarding</div>
+      <h1 class="hero-title">Ative clientes com <span>sucesso</span> desde o dia um.</h1>
+      <p class="hero-sub">Guia visual completo para parceiros implementarem e ativarem clientes na plataforma Helena com eficiência e qualidade.</p>
+      <div class="hero-btns">
+        <a href="#processo" class="btn-primary">Ver processo completo <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a href="#checklist" class="btn-ghost">Acessar checklist</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-stat-row">
+        <div class="hero-stat accent"><div class="stat-num">30</div><div class="stat-label">dias para primeiro valor</div></div>
+        <div class="hero-stat"><div class="stat-num" style="color:var(--green)">6</div><div class="stat-label">etapas do processo</div></div>
+      </div>
+      <div class="hero-stat-row">
+        <div class="hero-stat"><div class="stat-num" style="color:var(--green)">45</div><div class="stat-label">min de kickoff</div></div>
+        <div class="hero-stat"><div class="stat-num" style="color:var(--text2)">↑</div><div class="stat-label">Retenção aumentada</div></div>
+      </div>
+      <div class="hero-flow">
+        <div class="flow-title">Progresso do onboarding</div>
+        <div class="flow-steps">
+          <div class="flow-dot active">1</div><div class="flow-line done"></div>
+          <div class="flow-dot active">2</div><div class="flow-line done"></div>
+          <div class="flow-dot active">3</div><div class="flow-line"></div>
+          <div class="flow-dot">4</div><div class="flow-line"></div>
+          <div class="flow-dot">5</div><div class="flow-line"></div>
+          <div class="flow-dot">6</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="overview">
+  <div class="section-inner">
+    <div class="section-header" style="text-align:center;max-width:560px;margin:0 auto 64px">
+      <div class="section-tag" style="justify-content:center">Visão Geral</div>
+      <h2 class="section-title">Como funciona o <span>onboarding</span></h2>
+      <p class="section-sub" style="margin:0 auto">Seis etapas estruturadas para uma ativação consistente e de alto valor.</p>
+    </div>
+    <div class="flow-timeline">
+      <div class="flow-step"><div class="step-num">01</div><div class="step-name">Boas-vindas</div><div class="step-desc">Mensagem de boas-vindas e agendamento do kickoff</div></div>
+      <div class="flow-step"><div class="step-num">02</div><div class="step-name">Kick Off</div><div class="step-desc">Reunião de alinhamento de objetivos</div></div>
+      <div class="flow-step"><div class="step-num">03</div><div class="step-name">Configuração</div><div class="step-desc">Setup da plataforma e conexão do canal</div></div>
+      <div class="flow-step"><div class="step-num">04</div><div class="step-name">Primeiro Valor</div><div class="step-desc">Treinamento e ativação do atendimento</div></div>
+      <div class="flow-step"><div class="step-num">05</div><div class="step-name">Acompanhamento</div><div class="step-desc">Check-ins nos dias 3, 7 e 14</div></div>
+      <div class="flow-step"><div class="step-num">06</div><div class="step-name">Revisão</div><div class="step-desc">Reunião de 30 dias para avaliar resultados</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="processo">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-tag">Processo Completo</div>
+      <h2 class="section-title">Cada etapa em <span>detalhe</span></h2>
+      <p class="section-sub">Siga este processo para garantir uma implantação estruturada, rápida e bem-sucedida.</p>
+    </div>
+    <div class="step-detail">
+      <div class="step-detail-header"><div class="step-badge">01</div><div><div class="step-detail-title">Boas-vindas ao Cliente</div><div class="step-detail-sub">O primeiro contato define o tom de toda a experiência. Envie uma mensagem calorosa e pessoal.</div><div class="step-tags"><span class="step-tag">Dia 0</span><span class="step-tag">WhatsApp</span><span class="step-tag">E-mail</span><span class="step-tag">Agendamento</span></div></div></div>
+      <div class="step-detail-body">
+        <div class="detail-card"><div class="detail-card-title"><span>💬</span> Mensagem de boas-vindas</div><div class="detail-card-text">Envie em até 24h após o fechamento. Proponha um horário específico para o Kickoff.</div><div style="margin-top:14px;padding:16px;background:rgba(255,255,255,0.03);border-radius:10px;border:1px solid rgba(255,255,255,0.07)"><div style="font-size:10px;color:var(--green);font-weight:700;letter-spacing:0.08em;margin-bottom:10px">EXEMPLO DE MENSAGEM</div><div style="font-size:12.5px;color:var(--text2);line-height:1.75">Oi [Nome]! 😄<br>Aqui é a [Atendente], responsável pela sua implantação.<br>Que bom ter você com a gente!<br><br>Gostaria de marcar um Kickoff rápido (~45 min) para te apresentar as etapas.<br><br>Que tal <strong style="color:var(--text)">xx/xx às xx:xx</strong>? Ou prefere outro horário?</div></div></div>
+        <div class="detail-card"><div class="detail-card-title"><span>✅</span> Checklist desta etapa</div><ul class="detail-checklist"><li>Enviar mensagem de boas-vindas em até 24h após o fechamento</li><li>Apresentar-se pelo nome como responsável pela implantação</li><li>Propor data e horário específico para o Kickoff</li><li>Confirmar que o cliente tem acesso à plataforma</li><li>Registrar o contato no CRM e no checklist de onboarding</li><li>Aguardar confirmação e registrar data do Kickoff</li></ul></div>
+      </div>
+    </div>
+    <div class="step-detail">
+      <div class="step-detail-header"><div class="step-badge">02</div><div><div class="step-detail-title">Reunião de Kick Off</div><div class="step-detail-sub">A reunião mais importante do processo. Use esses 45 minutos para entender objetivos, mapear o processo atual e criar o plano de implementação.</div><div class="step-tags"><span class="step-tag">45 min</span><span class="step-tag">Objetivos</span><span class="step-tag">Mapeamento</span><span class="step-tag">Plano</span></div></div></div>
+      <div class="step-detail-body">
+        <div class="detail-card" style="grid-column:span 2">
+          <div class="detail-card-title" style="margin-bottom:20px">📅 Agenda da Reunião</div>
+          <div class="agenda-list">
+            <div class="agenda-item active"><div class="agenda-num">1</div><div><div class="agenda-title">Boas-vindas e apresentações</div><div class="agenda-desc">Criar ambiente acolhedor e apresentar os participantes</div></div><div class="agenda-time">5 min</div></div>
+            <div class="agenda-item"><div class="agenda-num">2</div><div><div class="agenda-title">Alinhamento de objetivos</div><div class="agenda-desc">O que o cliente quer alcançar com a plataforma?</div></div><div class="agenda-time">10 min</div></div>
+            <div class="agenda-item"><div class="agenda-num">3</div><div><div class="agenda-title">Mapeamento do processo atual</div><div class="agenda-desc">Como o cliente trabalha hoje e quais ferramentas usa</div></div><div class="agenda-time">10 min</div></div>
+            <div class="agenda-item"><div class="agenda-num">4</div><div><div class="agenda-title">Apresentação da plataforma</div><div class="agenda-desc">Demo focada nas funcionalidades mais relevantes</div></div><div class="agenda-time">10 min</div></div>
+            <div class="agenda-item"><div class="agenda-num">5</div><div><div class="agenda-title">Próximos passos</div><div class="agenda-desc">Cronograma, responsáveis e ações concretas</div></div><div class="agenda-time">10 min</div></div>
+          </div>
+        </div>
+        <div class="detail-card"><div class="detail-card-title"><span>✅</span> Checklist pré-kickoff</div><ul class="detail-checklist"><li>Confirmar participação do decisor</li><li>Características do negócio mapeadas previamente</li><li>Ter o checklist de Kick Off aberto para preenchimento</li><li>Revisar histórico do cliente no CRM</li><li>Definir tipo de conexão: API Oficial ou Z-API</li><li>Preparar acesso ao ambiente de demonstração</li></ul></div>
+        <div class="detail-card"><div class="detail-card-title"><span>❓</span> Perguntas-chave para fazer</div><ul class="detail-checklist"><li>Qual é o principal objetivo com a plataforma?</li><li>Como é o processo de atendimento hoje?</li><li>Quantos usuários usarão a plataforma?</li><li>Qual número será conectado ao WhatsApp?</li></ul></div>
+        <div class="detail-card full">
+          <div class="detail-card-title" style="margin-bottom:16px">📋 Checklist interativo do Kick Off</div>
+          <div class="cl-progress" style="margin-bottom:20px"><span class="cl-progress-text">Progresso</span><div class="cl-progress-bar-wrap"><div class="cl-progress-bar" id="ko-bar" style="width:0%"></div></div><span class="cl-progress-pct" id="ko-pct">0%</span></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+            <div>
+              <div class="cl-section-title" style="margin-bottom:12px">Sobre o Cliente</div>
+              <div class="cl-items">
+                <div class="cl-item ko-check"><div class="cl-checkbox"></div><div class="cl-item-text">Objetivo principal do projeto definido com o cliente</div></div>
+                <div class="cl-item ko-check"><div class="cl-checkbox"></div><div class="cl-item-text">Objetivos secundários levantados e documentados</div></div>
+                <div class="cl-item ko-check"><div class="cl-checkbox"></div><div class="cl-item-text">Características do negócio mapeadas com o cliente</div></div>
+                <div class="cl-item ko-check"><div class="cl-checkbox"></div><div class="cl-item-text">Público-alvo foi definido</div></div>
+                <div class="cl-item ko-check"><div class="cl-checkbox"></div><div class="cl-item-text">Processo de atendimento atual do cliente foi mapeado</div></div>
+              </div>
+            </div>
+            <div>
+              <div class="cl-section-title" style="margin-bottom:12px">Sobre o Ambiente na Plataforma</div>
+              <div class="cl-items">
+                <div class="cl-item ko-check"><div class="cl-checkbox"></div><div class="cl-item-text">E-mail e telefone para criar usuário admin definidos</div></div>
+                <div class="cl-item ko-check"><div class="cl-checkbox"></div><div class="cl-item-text">Número para conexão definido com o cliente</div></div>
+                <div class="cl-item ko-check"><div class="cl-checkbox"></div><div class="cl-item-text">Tipo de conexão definido: API Oficial ou Z-API</div></div>
+                <div class="cl-item ko-check"><div class="cl-checkbox"></div><div class="cl-item-text">Necessidade de manter histórico de mensagens verificada</div></div>
+                <div class="cl-item ko-check"><div class="cl-checkbox"></div><div class="cl-item-text">Etapas do cronograma de implantação definidas com o cliente</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="detail-card full accent"><div class="detail-card-title"><span>💡</span> Dica importante</div><div class="detail-card-text">Máximo 45 minutos. Foque nos objetivos do cliente, não em todas as funcionalidades. Ao final, envie e-mail de resumo com os próximos passos em até 2 horas.</div></div>
+      </div>
+    </div>
+    <div class="step-detail">
+      <div class="step-detail-header"><div class="step-badge">03</div><div><div class="step-detail-title">Configuração Inicial</div><div class="step-detail-sub">Configure a plataforma para refletir o processo real do cliente.</div><div class="step-tags"><span class="step-tag">Setup</span><span class="step-tag">Usuários</span><span class="step-tag">Chatbot</span><span class="step-tag">API Oficial</span><span class="step-tag">Z-API</span></div></div></div>
+      <div class="step-detail-body">
+        <div class="detail-card"><div class="detail-card-title"><span>🏢</span> Criação da conta</div><ul class="detail-checklist"><li>Inserir informações contábeis (CNPJ, Razão Social, Nome Fantasia) conforme contrato</li><li>Configurar tipo de ambiente e status da assinatura corretamente</li><li>Liberar funções em "Personalizar opções" conforme acordado em contrato</li><li>Disponibilizar Chatbots, Sequências, Painéis, Usuários e Canais conforme contrato</li></ul></div>
+        <div class="detail-card"><div class="detail-card-title"><span>⚙️</span> Configuração da conta</div><ul class="detail-checklist"><li>Configurar horário de atendimento corretamente</li><li>Configurar ao menos um chatbot básico</li><li>Para API Oficial: cadastrar ao menos 1 modelo de mensagem</li><li>Criar equipes conforme estrutura do cliente</li><li>Cadastrar usuários com perfil de acesso vinculados às equipes</li></ul></div>
+        <div class="detail-card api-section">
+          <div class="detail-card-title"><span>📡</span> Conexão do canal de atendimento</div>
+          <div class="api-tabs">
+            <button class="api-tab active" data-panel="api-oficial">API Oficial (sem coexistência)</button>
+            <button class="api-tab" data-panel="api-noficial">API Não Oficial (Z-API)</button>
+            <button class="api-tab" data-panel="api-coex">API Oficial com Coexistência</button>
+            <button class="api-tab" data-panel="api-insta">Instagram / Messenger</button>
+            <button class="api-tab" data-panel="api-portab">API Oficial via Portabilidade</button>
+          </div>
+          <div id="api-oficial" class="api-panel active">
+            <div class="api-item"><div class="api-item-text">Ambiente do cliente com configurações mínimas para operação</div></div>
+            <div class="api-item"><div class="api-item-text">Responsável tem acesso à BM como administrador</div></div>
+            <div class="api-item"><div class="api-item-text">Número desvinculado de conta WhatsApp via troca de número ou número novo</div></div>
+            <div class="api-item"><div class="api-item-text">Número está ativo, recebendo ligações e SMS</div></div>
+            <div class="api-item"><div class="api-item-text">Site vinculado à BM ativo com "https" e com Razão Social e CNPJ</div></div>
+            <div class="api-item"><div class="api-item-text">Informações fiscais preenchidas na BM conforme Receita Federal</div></div>
+            <div class="api-item"><div class="api-item-text">BM sem restrições na "Página Inicial do Suporte para Empresas"</div></div>
+            <div class="api-item"><div class="api-item-text">Cartão de crédito internacional inserido como forma de pagamento padrão</div></div>
+            <div class="api-item"><div class="api-item-text">Testes de troca de mensagens realizados com o número conectado</div></div>
+          </div>
+          <div id="api-noficial" class="api-panel">
+            <div class="api-item"><div class="api-item-text">Ambiente do cliente com configurações mínimas para operação</div></div>
+            <div class="api-item"><div class="api-item-text">Número está ativo e conectado ao WhatsApp Business</div></div>
+            <div class="api-item"><div class="api-item-text">Número para conexão definido e confirmado com o cliente</div></div>
+            <div class="api-item"><div class="api-item-text">Cliente está ciente dos riscos envolvidos na conexão não oficial</div></div>
+            <div class="api-warn" style="grid-column:span 2">⚠️ A conexão via Z-API apresenta riscos de banimento. Certifique-se de que o cliente compreende e aceita esses riscos.</div>
+          </div>
+          <div id="api-coex" class="api-panel">
+            <div class="api-item"><div class="api-item-text">Número cadastrado no WhatsApp Business e ativo para ligações e SMS</div></div>
+            <div class="api-item"><div class="api-item-text">Site vinculado à BM ativo com "https", Razão Social e CNPJ</div></div>
+            <div class="api-item"><div class="api-item-text">Informações fiscais preenchidas na BM conforme Receita Federal</div></div>
+            <div class="api-item"><div class="api-item-text">BM sem restrições no Suporte para Empresas</div></div>
+            <div class="api-item"><div class="api-item-text">Nome de exibição da conta WhatsApp Business igual ao nome da página Facebook</div></div>
+            <div class="api-item"><div class="api-item-text">Cartão de crédito configurado e testes realizados</div></div>
+          </div>
+          <div id="api-insta" class="api-panel">
+            <div class="api-item"><div class="api-item-text">Responsável tem acesso à BM como administrador</div></div>
+            <div class="api-item"><div class="api-item-text">Acesso à página Facebook e ao perfil Instagram como administrador</div></div>
+            <div class="api-item"><div class="api-item-text">Perfil Instagram configurado como Empresarial</div></div>
+            <div class="api-item"><div class="api-item-text">Perfil Instagram vinculado à página Facebook com acesso à caixa de mensagens</div></div>
+            <div class="api-item"><div class="api-item-text">Perfil Instagram e página Facebook vinculados à BM</div></div>
+          </div>
+          <div id="api-portab" class="api-panel">
+            <div class="api-item"><div class="api-item-text">Parceiro de conexão atual do cliente identificado e avisado da portabilidade</div></div>
+            <div class="api-item"><div class="api-item-text">Verificado se o parceiro atual precisa autorizar a portabilidade internamente — e, se sim, ação já feita</div></div>
+            <div class="api-item"><div class="api-item-text">BM atual em que o número está vinculado foi identificada</div></div>
+            <div class="api-item"><div class="api-item-text">Responsável pela conexão tem acesso à BM como administrador</div></div>
+            <div class="api-item"><div class="api-item-text">Autenticação de 2 fatores pode ser desativada na WABA vinculada</div></div>
+            <div class="api-item"><div class="api-item-text">BM está verificada e sem restrições no Suporte para Empresas</div></div>
+            <div class="api-item"><div class="api-item-text">Domínio cadastrado na BM está ativo e o site abre corretamente</div></div>
+            <div class="api-item"><div class="api-item-text">Display name (nome exibido ao contato) está aprovado</div></div>
+            <div class="api-item"><div class="api-item-text">Não há saldo em aberto para pagamento na BM</div></div>
+            <div class="api-item"><div class="api-item-text">Número que será conectado está ativo, recebendo ligações e SMS</div></div>
+            <div class="api-warn" style="grid-column:span 2">📅 No dia da portabilidade: confirmar número ativo, criar nova WABA, configurar cartão de crédito como pagamento padrão e testar troca de mensagens.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="step-detail">
+      <div class="step-detail-header"><div class="step-badge">04</div><div><div class="step-detail-title">Primeiro Valor</div><div class="step-detail-sub">Treine os usuários, ative o atendimento e garanta que o cliente execute as primeiras ações reais nos primeiros dias.</div><div class="step-tags"><span class="step-tag">Dias 1–7</span><span class="step-tag">Treinamento</span><span class="step-tag">Ativação</span></div></div></div>
+      <div class="step-detail-body">
+        <div class="detail-card"><div class="detail-card-title"><span>🎓</span> Treinamento do administrador</div><ul class="detail-checklist"><li>Treinar usuário admin para ajustar configurações mínimas se necessário</li><li>Agendar treinamento de atendimento com colaboradores da empresa</li><li>Apresentar login/logout e funcionalidades básicas</li></ul></div>
+        <div class="detail-card"><div class="detail-card-title"><span>📱</span> Treinamento de atendimento</div><ul class="detail-checklist"><li>Apresentar painel com fases: Novo, Meus, Outros e Concluídos</li><li>Explicar distribuição de atendimento e carteirização</li><li>Apresentar recursos: áudio, documentos, transferência, notas internas</li><li>Explicar gestão de contatos: edição, anotações, etiquetas, histórico</li></ul></div>
+        <div class="detail-card"><div class="detail-card-title"><span>🚀</span> Atendimento ativo</div><ul class="detail-checklist"><li>Explicar processo para iniciar atendimento com um contato</li><li>Para API Oficial: apresentar necessidade de modelos de mensagem</li><li>Informar recursos não disponíveis na API Oficial da Meta</li></ul></div>
+        <div class="detail-card"><div class="detail-card-title"><span>⚡</span> Ativação da conta</div><ul class="detail-checklist"><li>Para API Oficial: enviar modelos de mensagem para aprovação</li><li>Ativar chatbot e vincular ao canal de atendimento</li><li>Habilitar tempo de segurança nas contas de cada usuário</li><li>Agendar reunião de tira-dúvidas pós-conexão</li></ul></div>
+        <div class="detail-card full accent"><div class="detail-card-title"><span>🏆</span> Garantir o primeiro resultado</div><div class="detail-card-text">Identifique a funcionalidade de maior impacto para aquele cliente e acompanhe a execução da primeira ação real. Registre e celebre o resultado — isso cria engajamento emocional e reduz o risco de abandono.</div></div>
+      </div>
+    </div>
+    <div class="step-detail">
+      <div class="step-detail-header"><div class="step-badge">05</div><div><div class="step-detail-title">Acompanhamento</div><div class="step-detail-sub">Presença contínua nos primeiros dias é o que separa bons de ótimos onboardings.</div><div class="step-tags"><span class="step-tag">Dias 3, 7, 14</span><span class="step-tag">Check-in</span><span class="step-tag">Suporte Proativo</span></div></div></div>
+      <div class="step-detail-body">
+        <div class="detail-card"><div class="detail-card-title"><span>📅</span> Cadência de contatos ativos</div><ul class="detail-checklist"><li><strong style="color:var(--text)">Dia 3:</strong> verificar se o cliente conseguiu usar a plataforma e se há dúvidas</li><li><strong style="color:var(--text)">Dia 7:</strong> entender engajamento e remover obstáculos</li><li><strong style="color:var(--text)">Dia 14:</strong> verificar se objetivos iniciais estão sendo alcançados</li></ul></div>
+        <div class="detail-card"><div class="detail-card-title"><span>📊</span> Monitoramento e suporte</div><ul class="detail-checklist"><li>Monitorar métricas de engajamento e uso na plataforma</li><li>Responder dúvidas em no máximo 4 horas em dias úteis</li><li>Apresentar recursos adicionais conforme cronograma do kickoff</li><li>Registrar todas as interações no checklist de acompanhamento</li></ul></div>
+        <div class="detail-card full accent"><div class="detail-card-title"><span>⚠️</span> Sinais de risco para agir imediatamente</div><div class="detail-card-text">Silêncio do cliente pode ser abandono silencioso. Se ele não responder ao check-in do dia 7, tente por outro canal. Quedas no acesso à plataforma exigem ação imediata.</div></div>
+      </div>
+    </div>
+    <div class="step-detail">
+      <div class="step-detail-header"><div class="step-badge">06</div><div><div class="step-detail-title">Revisão de Resultados — 30 dias</div><div class="step-detail-sub">Avalie resultados, consolide o relacionamento, identifique oportunidades de expansão.</div><div class="step-tags"><span class="step-tag">Dia 30</span><span class="step-tag">Resultados</span><span class="step-tag">NPS</span><span class="step-tag">Expansão</span></div></div></div>
+      <div class="step-detail-body">
+        <div class="detail-card"><div class="detail-card-title"><span>📈</span> Preparar a reunião</div><ul class="detail-checklist"><li>Compilar dados de uso, volume de atendimentos e resultados obtidos</li><li>Comparar resultados com os objetivos definidos no kickoff</li><li>Agendar reunião com o decisor com pelo menos 5 dias de antecedência</li></ul></div>
+        <div class="detail-card"><div class="detail-card-title"><span>🔍</span> Conduzir a revisão</div><ul class="detail-checklist"><li>Apresentar conquistas antes de abordar ajustes necessários</li><li>Identificar e apresentar oportunidades de expansão</li><li>Definir metas claras para os próximos 30 dias</li><li>Coletar NPS e satisfação do cliente</li><li>Agendar a próxima revisão antes de encerrar</li></ul></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="checklist">
+  <div class="section-inner">
+    <div class="section-header"><div class="section-tag">Checklist de Implantação</div><h2 class="section-title">Checklist <span>interativo</span></h2><p class="section-sub">Todas as tarefas organizadas por etapa. Clique em cada item para marcar como concluído.</p></div>
+    <div class="checklist-tabs">
+      <button class="cl-tab active" data-panel="cl-criacao">1. Criação de Conta</button>
+      <button class="cl-tab" data-panel="cl-treino">2. Treinamento</button>
+      <button class="cl-tab" data-panel="cl-conexao">3. Conexão de Canal</button>
+      <button class="cl-tab" data-panel="cl-ativacao">4. Ativação</button>
+      <button class="cl-tab" data-panel="cl-portabilidade">5. Portabilidade</button>
+    </div>
+    <div id="cl-criacao" class="cl-panel active">
+      <div class="cl-progress"><span class="cl-progress-text">Progresso</span><div class="cl-progress-bar-wrap"><div class="cl-progress-bar" style="width:0%"></div></div><span class="cl-progress-pct">0%</span></div>
+      <div class="cl-section"><div class="cl-section-title">Criação da Conta na Plataforma</div><div class="cl-items">
+        <div class="cl-item"><div class="cl-checkbox"></div><div class="cl-item-text">Informações contábeis (CNPJ, Razão Social, Nome Fantasia) inseridas conforme contrato</div></div>
+        <div class="cl-item"><div class="cl-checkbox"></div><div class="cl-item-text">Tipo de ambiente configurado corretamente</div></div>
+        <div class="cl-item"><div class="cl-checkbox"></div><div class="cl-item-text">Status da assinatura preenchido corretamente</div></div>
+        <div class="cl-item"><div class="cl-checkbox"></div><div class="cl-item-text">Plano configurado com liberação das funções acordadas em contrato</div></div>
+        <div class="cl-item"><div class="cl-checkbox"></div><div class="cl-item-text">Chatbots, Sequências, Painéis, Usuários e Canais disponibilizados conforme contrato</div></div>
+      </div></div>
+      <div class="cl-section"><div class="cl-section-title">Configuração da Conta</div><div class="cl-items">
+        <div class="cl-item"><div class="cl-checkbox"></div><div class="cl-item-text">Horário de atendimento configurado corretamente</div></div>
+        <div class="cl-item"><div class="cl-checkbox"></div><div class="cl-item-text">Ao menos um chatbot básico configurado</div></div>
+        <div class="cl-item"><div class="cl-checkbox"></div><div class="cl-item-text">Para API Oficial: ao menos 1 modelo de mensagem (rascunho) cadastrado</div></div>
+        <div class="cl-item"><div class="cl-checkbox"></div><div class="cl-item-text">Equipes criadas conforme estrutura do cliente</div></div>
+        <div class="cl-item"><div class="cl-checkbox"></div><div class="cl-item-text">Usuários cadastrados com perfil de acesso específico e vinculados às equipes</div></div>
+      </div></div>
+    </div>
+    <div id="cl-treino" class="cl-panel">
+      <div class="cl-progress"><span class="cl-progress-text">Progresso</span><div class="cl-progress-bar-wrap"><div class="cl-progress-bar" style="width:0%"></div></div><span class="cl-progress-pct">0%</span></div>
+      <div class="cl-section"><div class="cl-section-title">Funcionalidades Básicas</div><div class="cl-items">
+        <div class="cl-item"><div class="cl-checkbox"></div><div class="cl-item-text">Processo de login/logout explicado</div></div>
+        <div class="cl-item"><div class="cl-checkbox"></div><div class="cl-item-text">Funcionalidades básicas apresentadas: chat interno, limpeza de cache, tempo de segurança</div></div>
+      </div></div>
+      <div class="cl-section"><div class="cl-section-title">Atendimento Receptivo</div><div class="cl-items">
+        <div class="cl-item"><div class="cl-checkbox"></div><div class="cl-item-text">Painel de atendimento apresentado com fases: Novo, Meus, Outros e Concluídos</div></div>
+        <div class="cl-item"><div class="cl-checkbox"></div><div class="cl-item-text">Lógica de distribuição de atendimento e carteirização apresentadas</div></div>
+      </div></div>
+      <div class="cl-section"><div class="cl-section-title">Recursos de Atendimento</div><div class="cl-items">
+        <div class="cl-item"><div class="cl-checkbox"></div><div class="cl-item-text">Recursos apresentados: áudio, documentos, imagens, transferência, notas internas</div></div>
+        <div class="cl-item"><div class="cl-checkbox"></div><div class="cl-item-text">Gestão de contatos explicada: edição, anotações, etiquetas, histórico de conversas</div></div>
+        <div class="cl-item"><div class="cl-checkbox"></div><div class="cl-item-text">Classificação de atendimento apresentada</div></div>
+        <div class="cl-item"><div class="cl-checkbox"></div><div class="cl-item-text">Necessidade dos modelos de mensagem para API Oficial apresentada</div></div>
+      </div></div>
+    </div>
+    <div id="cl-conexao" class="cl-panel">
+      <div class="cl-progress"><span class="cl-progress-text">Progresso</span><div class="cl-progress-bar-wrap"><div class="cl-progress-bar" style="width:0%"></div></div><span class="cl-progress-pct">0%</span></div>
+      <div class="cl-section"><div class="cl-section-title">WhatsApp — API Oficial (sem coexistência)</div><div class="cl-items">
+        <div class="cl-item"><div class="cl-checkbox"></div><div class="cl-item-text">Responsável tem acesso à BM como administrador</div></div>
+        <div class="cl-item"><div class="cl-checkbox"></div><div class="cl-item-text">Número desvinculado de conta WhatsApp</div></div>
+        <div class="cl-item"><div class="cl-checkbox"></div><div class="cl-item-text">Número ativo, recebendo ligações e SMS</div></div>
+        <div class="cl-item"><div class="cl-checkbox"></div><div class="cl-item-text">Site vinculado à BM ativo com "https" e com Razão Social e CNPJ</div></div>
+        <div class="cl-item"><div class="cl-checkbox"></div><div class="cl-item-text">Informações fiscais preenchidas na BM conforme Receita Federal</div></div>
+        <div class="cl-item"><div class="cl-checkbox"></div><div class="cl-item-text">BM sem restrições na Página Inicial do Suporte para Empresas</div></div>
+        <div class="cl-item"><div class="cl-checkbox"></div><div class="cl-item-text">Cartão de crédito internacional inserido como pagamento padrão</div></div>
+        <div class="cl-item"><div class="cl-checkbox"></div><div class="cl-item-text">Testes de troca de mensagens realizados com o número conectado</div></div>
+      </div></div>
+      <div class="cl-section"><div class="cl-section-title">Instagram e Messenger</div><div class="cl-items">
+        <div class="cl-item"><div class="cl-checkbox"></div><div class="cl-item-text">Responsável tem acesso à BM como administrador</div></div>
+        <div class="cl-item"><div class="cl-checkbox"></div><div class="cl-item-text">Acesso à página Facebook e perfil Instagram como administrador confirmado</div></div>
+        <div class="cl-item"><div class="cl-checkbox"></div><div class="cl-item-text">Perfil Instagram configurado como Empresarial e vinculado à página Facebook</div></div>
+        <div class="cl-item"><div class="cl-checkbox"></div><div class="cl-item-text">Perfil Instagram e página Facebook vinculados à BM</div></div>
+      </div></div>
+    </div>
+    <div id="cl-ativacao" class="cl-panel">
+      <div class="cl-progress"><span class="cl-progress-text">Progresso</span><div class="cl-progress-bar-wrap"><div class="cl-progress-bar" style="width:0%"></div></div><span class="cl-progress-pct">0%</span></div>
+      <div class="cl-section"><div class="cl-section-title">Ativação após Conexão dos Canais</div><div class="cl-items">
+        <div class="cl-item"><div class="cl-checkbox"></div><div class="cl-item-text">(API Oficial) Modelos de mensagem enviados para aprovação da Meta</div></div>
+        <div class="cl-item"><div class="cl-checkbox"></div><div class="cl-item-text">Chatbot de atendimento ativado e vinculado ao canal correspondente</div></div>
+        <div class="cl-item"><div class="cl-checkbox"></div><div class="cl-item-text">Tempo de segurança habilitado nas contas de cada usuário</div></div>
+        <div class="cl-item"><div class="cl-checkbox"></div><div class="cl-item-text">Tempo para conclusão do atendimento configurado por usuário</div></div>
+        <div class="cl-item"><div class="cl-checkbox"></div><div class="cl-item-text">Reunião de tira-dúvidas pós-conexão agendada</div></div>
+        <div class="cl-item"><div class="cl-checkbox"></div><div class="cl-item-text">Cronograma de reuniões de acompanhamento apresentado ao cliente</div></div>
+      </div></div>
+    </div>
+    <div id="cl-portabilidade" class="cl-panel">
+      <div class="cl-progress"><span class="cl-progress-text">Progresso</span><div class="cl-progress-bar-wrap"><div class="cl-progress-bar" style="width:0%"></div></div><span class="cl-progress-pct">0%</span></div>
+      <div class="cl-section"><div class="cl-section-title">Antes da Portabilidade</div><div class="cl-items">
+        <div class="cl-item"><div class="cl-checkbox"></div><div class="cl-item-text">Parceiro de conexão atual do cliente identificado e avisado da portabilidade</div></div>
+        <div class="cl-item"><div class="cl-checkbox"></div><div class="cl-item-text">Verificado se o parceiro de conexão atual precisa fazer alguma ação interna para autorizar a portabilidade — e, se sim, ação já realizada</div></div>
+        <div class="cl-item"><div class="cl-checkbox"></div><div class="cl-item-text">BM atual em que o número está vinculado foi identificada</div></div>
+        <div class="cl-item"><div class="cl-checkbox"></div><div class="cl-item-text">Responsável pela conexão tem acesso à BM como administrador</div></div>
+        <div class="cl-item"><div class="cl-checkbox"></div><div class="cl-item-text">Autenticação de 2 fatores pode ser desativada na WABA em que o número está vinculado</div></div>
+        <div class="cl-item"><div class="cl-checkbox"></div><div class="cl-item-text">BM está verificada</div></div>
+        <div class="cl-item"><div class="cl-checkbox"></div><div class="cl-item-text">Domínio cadastrado na BM está ativo e o site abre corretamente</div></div>
+        <div class="cl-item"><div class="cl-checkbox"></div><div class="cl-item-text">Display name (nome exibido ao contato) está aprovado</div></div>
+        <div class="cl-item"><div class="cl-checkbox"></div><div class="cl-item-text">Não há saldo em aberto para pagamento na BM</div></div>
+        <div class="cl-item"><div class="cl-checkbox"></div><div class="cl-item-text">BM sem restrições na Página Inicial do Suporte para Empresas que interfiram na conexão</div></div>
+        <div class="cl-item"><div class="cl-checkbox"></div><div class="cl-item-text">Número que será conectado está ativo, recebendo ligações e SMS</div></div>
+      </div></div>
+      <div class="cl-section"><div class="cl-section-title">No Dia da Portabilidade</div><div class="cl-items">
+        <div class="cl-item"><div class="cl-checkbox"></div><div class="cl-item-text">Número que será conectado está ativo, recebendo ligações e SMS</div></div>
+        <div class="cl-item"><div class="cl-checkbox"></div><div class="cl-item-text">Nova WABA criada no momento da portabilidade do número</div></div>
+        <div class="cl-item"><div class="cl-checkbox"></div><div class="cl-item-text">Cartão de crédito inserido nas formas de pagamento e configurado como padrão</div></div>
+        <div class="cl-item"><div class="cl-checkbox"></div><div class="cl-item-text">Testes de troca de mensagens realizados com o número conectado</div></div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<section id="boas-praticas">
+  <div class="section-inner">
+    <div class="section-header"><div class="section-tag">Boas Práticas</div><h2 class="section-title">O que fazem os <span>melhores</span> parceiros</h2></div>
+    <div class="practices-layout">
+      <div>
+        <div class="aside-title">Foco em valor, <span style="color:var(--green)">não em features.</span></div>
+        <div class="aside-desc">Os parceiros mais bem-sucedidos entendem que o cliente não comprou uma plataforma — comprou um resultado.</div>
+        <div class="metric-row">
+          <div class="metric"><div class="metric-label">Taxa de ativação</div><div class="metric-bar-wrap"><div class="metric-bar" style="width:87%"></div></div><div class="metric-val">87%</div></div>
+          <div class="metric"><div class="metric-label">Retenção em 90 dias</div><div class="metric-bar-wrap"><div class="metric-bar" style="width:92%"></div></div><div class="metric-val">92%</div></div>
+          <div class="metric"><div class="metric-label">NPS médio</div><div class="metric-bar-wrap"><div class="metric-bar" style="width:75%"></div></div><div class="metric-val">75</div></div>
+        </div>
+      </div>
+      <div class="practices-grid">
+        <div class="practice-card"><div class="practice-icon">⚡</div><div class="practice-title">Foque no valor rápido</div><div class="practice-desc">Garanta um "momento wow" nos primeiros 7 dias. Identifique a funcionalidade de maior impacto e vá direto nela.</div></div>
+        <div class="practice-card"><div class="practice-icon">🎯</div><div class="practice-title">Menos é mais</div><div class="practice-desc">Não apresente tudo de uma vez. Clientes sobrecarregados abandonam. Mostre apenas o relevante para o objetivo declarado no kickoff.</div></div>
+        <div class="practice-card"><div class="practice-icon">📱</div><div class="practice-title">Comunicação ativa</div><div class="practice-desc">Não espere o cliente entrar em contato com problemas. Faça check-ins nos dias 3, 7 e 14. Silêncio pode ser abandono silencioso.</div></div>
+        <div class="practice-card"><div class="practice-icon">📅</div><div class="practice-title">Agende na reunião</div><div class="practice-desc">Defina os próximos pontos de contato já no kickoff e coloque na agenda do cliente antes de encerrar.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">
+    <svg width="26" height="26" viewBox="0 0 36 36" fill="none"><rect x="2" y="2" width="14" height="21" rx="5" fill="rgba(255,255,255,0.14)"/><rect x="20" y="15" width="14" height="19" rx="5" fill="rgba(255,255,255,0.14)"/><circle cx="27" cy="8" r="7" fill="#1FDB5B"/></svg>
+    <span class="footer-logo-text">helena</span>
+  </div>
+  <div class="footer-copy">© 2026 Helena. Playbook de Onboarding de Parceiros.</div>
+  <div class="footer-links"><a href="#processo">Processo</a><a href="#checklist">Checklist</a></div>
+</footer>
+
+<script>
+// THEME
+(function(){
+  if(localStorage.getItem('htheme')==='light') document.body.classList.add('light');
+  updateThemeBtn();
+})();
+function toggleTheme(){
+  document.body.classList.toggle('light');
+  localStorage.setItem('htheme', document.body.classList.contains('light') ? 'light' : 'dark');
+  updateThemeBtn();
+}
+function updateThemeBtn(){
+  var icon = document.getElementById('thm-icon');
+  if(icon) icon.textContent = document.body.classList.contains('light') ? '🌙' : '☀️';
+}
+
+// NAV ACTIVE
+var sections=document.querySelectorAll("section[id]"),navLinks=document.querySelectorAll(".nav-links a");
+window.addEventListener("scroll",function(){var c="";sections.forEach(function(s){if(window.scrollY>=s.offsetTop-100)c=s.id});navLinks.forEach(function(a){a.classList.toggle("active",a.getAttribute("href")==="#"+c)})});
+
+// AGENDA
+document.querySelectorAll(".agenda-item").forEach(function(item){item.addEventListener("click",function(){document.querySelectorAll(".agenda-item").forEach(function(i){i.classList.remove("active")});item.classList.add("active")})});
+
+// API TABS
+document.querySelectorAll(".api-tab").forEach(function(btn){btn.addEventListener("click",function(){var p=btn.dataset.panel,s=btn.closest(".api-section");s.querySelectorAll(".api-tab").forEach(function(t){t.classList.remove("active")});s.querySelectorAll(".api-panel").forEach(function(p){p.classList.remove("active")});btn.classList.add("active");document.getElementById(p).classList.add("active")})});
+
+// CHECKLIST TABS
+document.querySelectorAll(".cl-tab").forEach(function(btn){btn.addEventListener("click",function(){var p=btn.dataset.panel;document.querySelectorAll(".cl-tab").forEach(function(t){t.classList.remove("active")});document.querySelectorAll(".cl-panel").forEach(function(p){p.classList.remove("active")});btn.classList.add("active");document.getElementById(p).classList.add("active")})});
+
+// CL ITEMS
+document.querySelectorAll(".cl-items").forEach(function(container){container.addEventListener("click",function(e){var item=e.target.closest(".cl-item");if(!item)return;if(item.classList.contains("ko-check"))return;item.classList.toggle("checked");var panel=item.closest(".cl-panel");if(!panel)return;var all=panel.querySelectorAll(".cl-item"),done=panel.querySelectorAll(".cl-item.checked").length,pct=Math.round(done/all.length*100);panel.querySelector(".cl-progress-bar").style.width=pct+"%";panel.querySelector(".cl-progress-pct").textContent=pct+"%"})});
+
+document.querySelectorAll(".api-item").forEach(function(item){item.addEventListener("click",function(){item.classList.toggle("checked")})});
+
+// KICKOFF CHECKLIST
+document.querySelectorAll(".ko-check").forEach(function(item){
+  item.addEventListener("click", function(){
+    item.classList.toggle("checked");
+    var all = document.querySelectorAll(".ko-check");
+    var done = document.querySelectorAll(".ko-check.checked").length;
+    var pct = Math.round(done / all.length * 100);
+    document.getElementById("ko-bar").style.width = pct + "%";
+    document.getElementById("ko-pct").textContent = pct + "%";
+  });
+});
+
+// DETAIL CHECKLIST
+document.querySelectorAll(".detail-checklist").forEach(function(list){list.addEventListener("click",function(e){var li=e.target.closest("li");if(!li)return;li.classList.toggle("done")})});
+</script>
+</body>
+</html>
+

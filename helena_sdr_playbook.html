@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Playbook SDR — plataforma</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --h-green: #22C55E;
+    --h-green-dark: #16A34A;
+    --h-black: #0A0A0A;
+    --bg: #111110;
+    --bg2: #1a1a18;
+    --card: #1e1e1c;
+    --border: rgba(255,255,255,0.1);
+    --border2: rgba(255,255,255,0.2);
+    --text: #f0ede6;
+    --text2: #9a9990;
+    --text3: #6b6b66;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+  }
+  body.light {
+    --bg: #f9f9f7;
+    --bg2: #f1f0ea;
+    --card: #ffffff;
+    --border: rgba(0,0,0,0.12);
+    --border2: rgba(0,0,0,0.22);
+    --text: #1a1a1a;
+    --text2: #6b6b66;
+    --text3: #9a9990;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    transition: background .25s, color .25s;
+  }
+
+  .container { max-width: 780px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+
+  /* HERO */
+  .hero {
+    background: #0A0A0A;
+    border-radius: var(--radius-lg);
+    padding: 1.75rem 2rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .hero img { height: 40px; width: auto; flex-shrink: 0; }
+  .hero-badge {
+    margin-left: auto; flex-shrink: 0;
+    background: #22C55E22; border: 1px solid #22C55E44;
+    color: var(--h-green); font-size: 11px; font-weight: 600;
+    padding: 4px 10px; border-radius: 20px;
+  }
+
+  /* THEME BUTTON */
+  .thm-btn {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 20px;
+    padding: 5px 12px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all .15s;
+    flex-shrink: 0;
+  }
+  .thm-btn:hover { border-color: var(--h-green); background: rgba(34,197,94,.1); }
+  body.light .thm-btn { background: rgba(0,0,0,0.06); border-color: rgba(0,0,0,0.15); }
+
+  /* TABS */
+  .tabs {
+    display: flex; gap: 4px; margin-bottom: 1.25rem;
+    background: var(--bg2); border-radius: var(--radius-lg); padding: 4px; flex-wrap: wrap;
+  }
+  .tab-btn {
+    flex: 1; padding: 8px 4px; border: none; background: transparent;
+    font-size: 12px; font-weight: 400; color: var(--text2);
+    border-radius: var(--radius-md); cursor: pointer; transition: all .15s; white-space: nowrap;
+  }
+  .tab-btn.active { background: #0A0A0A; color: #fff; font-weight: 600; }
+  .tab-btn:hover:not(.active) { background: var(--card); color: var(--text); }
+
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* CARD */
+  .card {
+    background: var(--card);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+  }
+  .card-title {
+    font-size: 14px; font-weight: 600; color: var(--text);
+    display: flex; align-items: center; gap: 8px; margin-bottom: .75rem;
+  }
+  .card-icon {
+    width: 28px; height: 28px; border-radius: 8px;
+    background: var(--h-green); display: flex; align-items: center;
+    justify-content: center; flex-shrink: 0;
+  }
+  .card-icon svg { width: 14px; height: 14px; }
+
+  /* PROGRESS */
+  .progress-wrap { margin-bottom: .75rem; }
+  .progress-header { display: flex; justify-content: space-between; margin-bottom: 6px; }
+  .progress-title { font-size: 12px; color: var(--text2); }
+  .progress-count { font-size: 12px; font-weight: 600; color: var(--h-green); }
+  .progress-track { height: 4px; background: var(--bg2); border-radius: 2px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--h-green); border-radius: 2px; transition: width .3s ease; }
+
+  /* CHECKLIST */
+  .checklist { list-style: none; }
+  .check-item {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 8px 0; border-bottom: 0.5px solid var(--border);
+    cursor: pointer; border-radius: 4px;
+  }
+  .check-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .check-item:first-child { padding-top: 0; }
+  .check-box {
+    width: 18px; height: 18px; border-radius: 5px; flex-shrink: 0; margin-top: 1px;
+    border: 1.5px solid var(--border2); background: transparent;
+    transition: all .15s; display: flex; align-items: center; justify-content: center;
+  }
+  .check-item.checked .check-box { background: var(--h-green); border-color: var(--h-green); }
+  .check-item.checked .check-box svg { display: block; }
+  .check-box svg { display: none; width: 10px; height: 10px; }
+  .check-label { font-size: 13px; color: var(--text); line-height: 1.5; flex: 1; transition: color .15s; }
+  .check-item.checked .check-label { color: var(--text2); text-decoration: line-through; }
+
+  .section-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: .75rem; }
+  .reset-btn {
+    background: transparent; border: 0.5px solid var(--border2);
+    color: var(--text2); font-size: 12px; padding: 5px 12px;
+    border-radius: var(--radius-md); cursor: pointer; transition: all .15s;
+  }
+  .reset-btn:hover { border-color: var(--h-green); color: var(--h-green); }
+
+  /* SPIN */
+  .spin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; margin-bottom: 1rem; }
+  @media(max-width: 500px) { .spin-grid { grid-template-columns: 1fr; } }
+  .spin-card {
+    background: var(--card); border: 0.5px solid var(--border);
+    border-radius: var(--radius-lg); padding: 1rem; cursor: pointer; transition: border-color .2s;
+  }
+  .spin-card:hover { border-color: var(--h-green); }
+  .spin-card.open { border-color: var(--h-green); }
+  .spin-letter { font-size: 28px; font-weight: 700; color: var(--h-green); line-height: 1; }
+  .spin-name { font-size: 11px; color: var(--text2); margin-top: 2px; }
+  .spin-desc { font-size: 12px; color: var(--text); margin-top: 8px; line-height: 1.5; }
+  .spin-questions { margin-top: 10px; display: none; border-top: 0.5px solid var(--border); padding-top: 10px; }
+  .spin-card.open .spin-questions { display: block; }
+  .spin-q {
+    font-size: 12px; color: var(--text2); padding: 5px 0;
+    border-bottom: 0.5px solid var(--border); line-height: 1.5;
+  }
+  .spin-q:last-child { border-bottom: none; padding-bottom: 0; }
+  .spin-q::before { content: "→ "; color: var(--h-green); font-weight: 600; }
+  .spin-toggle { float: right; font-size: 11px; color: var(--h-green); }
+
+  /* BANT */
+  .bant-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
+  @media(max-width: 500px) { .bant-grid { grid-template-columns: 1fr; } }
+  .bant-card { background: var(--bg2); border-radius: var(--radius-md); padding: 1rem; }
+  .bant-letter { font-size: 26px; font-weight: 700; color: var(--h-green); }
+  .bant-full { font-size: 11px; color: var(--text2); margin-top: 1px; }
+  .bant-question { font-size: 12px; color: var(--text); margin-top: 10px; line-height: 1.6; }
+
+  /* ICP */
+  .section-label {
+    font-size: 11px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: .06em; color: var(--text2); margin-bottom: .6rem;
+  }
+  .icp-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 1rem; }
+  .icp-chip {
+    background: var(--bg2); border: 0.5px solid var(--border);
+    border-radius: 20px; padding: 6px 14px; font-size: 12px;
+    color: var(--text); cursor: pointer; transition: all .15s;
+  }
+  .icp-chip:hover, .icp-chip.active { background: var(--h-green); color: #fff; border-color: var(--h-green); }
+  #icp-detail .card { border-left: 3px solid var(--h-green); }
+  .icp-dor {
+    padding: 6px 0; border-bottom: 0.5px solid var(--border);
+    font-size: 13px; color: var(--text); list-style: none;
+  }
+  .icp-dor:last-child { border-bottom: none; }
+  .icp-dor::before { content: "→ "; color: var(--h-green); font-weight: 600; }
+  .signal-item {
+    padding: 7px 0; border-bottom: 0.5px solid var(--border);
+    font-size: 13px; color: var(--text); list-style: none;
+  }
+  .signal-item:last-child { border-bottom: none; }
+
+  /* OBJEÇÕES */
+  .obj-item { border: 0.5px solid var(--border); border-radius: var(--radius-md); overflow: hidden; margin-bottom: .5rem; }
+  .obj-header {
+    padding: .85rem 1rem; display: flex; justify-content: space-between;
+    align-items: center; cursor: pointer; background: var(--card); transition: background .15s;
+  }
+  .obj-header:hover { background: var(--bg2); }
+  .obj-tag {
+    font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 10px;
+    background: var(--bg2); color: var(--text2); flex-shrink: 0;
+  }
+  .obj-q { font-size: 13px; font-weight: 500; color: var(--text); flex: 1; margin: 0 10px; }
+  .obj-chevron { font-size: 10px; color: var(--text2); transition: transform .2s; flex-shrink: 0; }
+  .obj-item.open .obj-chevron { transform: rotate(180deg); }
+  .obj-body {
+    display: none; padding: .85rem 1rem; font-size: 13px; color: var(--text2);
+    line-height: 1.65; border-top: 0.5px solid var(--border); background: var(--card);
+  }
+  .obj-item.open .obj-body { display: block; }
+
+  /* TIP */
+  .tip-box {
+    background: #22C55E0F; border: 0.5px solid #22C55E33;
+    border-radius: var(--radius-md); padding: .85rem 1rem;
+    font-size: 12px; color: var(--text); line-height: 1.6; margin-top: .75rem;
+  }
+  .tip-box strong { color: var(--h-green); }
+
+  /* FOOTER */
+  .footer { margin-top: 2.5rem; text-align: center; font-size: 11px; color: var(--text3); }
+  .footer a { color: var(--h-green); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HERO -->
+  <div class="hero">
+    <img src="logo helena.png" alt="helena" style="height:28px;">
+    <div class="hero-badge">SDR Guide v1.0</div>
+    <button class="thm-btn" id="thm-btn" onclick="toggleTheme()" title="Alternar tema">
+      <span id="thm-icon">☀️</span>
+    </button>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showTab('checklist',this)">✅ Checklist</button>
+    <button class="tab-btn" onclick="showTab('spin',this)">🔄 SPIN</button>
+    <button class="tab-btn" onclick="showTab('bant',this)">🎯 BANT</button>
+    <button class="tab-btn" onclick="showTab('icp',this)">👤 ICP</button>
+    <button class="tab-btn" onclick="showTab('objecoes',this)">🛡️ Objeções</button>
+  </div>
+
+  <!-- ===== CHECKLIST ===== -->
+  <div class="section active" id="sec-checklist">
+
+    <div class="card">
+      <div class="section-row">
+        <div class="card-title" style="margin-bottom:0">
+          <div class="card-icon">
+            <svg fill="none" viewBox="0 0 14 14"><path d="M7 1v4M9.5 3.5h-5M2 7h10M2 10h10" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg>
+          </div>
+          Pré-call — preparação
+        </div>
+        <button class="reset-btn" onclick="resetSection('pre')">Limpar</button>
+      </div>
+      <br>
+      <div class="progress-wrap">
+        <div class="progress-header">
+          <span class="progress-title">Progresso</span>
+          <span class="progress-count" id="pre-count">0/6</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="pre-bar" style="width:0%"></div></div>
+      </div>
+      <ul class="checklist" id="pre-list">
+        <li class="check-item" onclick="toggle(this,'pre')">
+          <div class="check-box"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <span class="check-label"><strong style="color:var(--h-green)">1.</strong> Identificar o nome da empresa e segmento/nicho</span>
+        </li>
+        <li class="check-item" onclick="toggle(this,'pre')">
+          <div class="check-box"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <span class="check-label"><strong style="color:var(--h-green)">2.</strong> Pesquisar ou pedir o site, Instagram ou LinkedIn da empresa do lead</span>
+        </li>
+        <li class="check-item" onclick="toggle(this,'pre')">
+          <div class="check-box"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <span class="check-label"><strong style="color:var(--h-green)">3.</strong> Checar se já usa plataforma de atendimento concorrente (API Oficial ou não oficial?)</span>
+        </li>
+        <li class="check-item" onclick="toggle(this,'pre')">
+          <div class="check-box"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <span class="check-label"><strong style="color:var(--h-green)">4.</strong> Mapear quais funcionalidades o lead busca e quais dores a empresa tem</span>
+        </li>
+        <li class="check-item" onclick="toggle(this,'pre')">
+          <div class="check-box"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <span class="check-label"><strong style="color:var(--h-green)">5.</strong> Verificar se faz tráfego pago (Meta Ads, Google Ads)</span>
+        </li>
+        <li class="check-item" onclick="toggle(this,'pre')">
+          <div class="check-box"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <span class="check-label"><strong style="color:var(--h-green)">6.</strong> Definir objetivo da call: qualificar para agendar demo com o Closer</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="section-row">
+        <div class="card-title" style="margin-bottom:0">
+          <div class="card-icon">
+            <svg fill="none" viewBox="0 0 14 14"><circle cx="7" cy="7" r="5.5" stroke="white" stroke-width="1.3"/><path d="M7 4.5v3l2 1.5" stroke="white" stroke-width="1.3" stroke-linecap="round"/></svg>
+          </div>
+          Durante a qualificação
+        </div>
+        <button class="reset-btn" onclick="resetSection('dur')">Limpar</button>
+      </div>
+      <br>
+      <div class="progress-wrap">
+        <div class="progress-header">
+          <span class="progress-title">Progresso</span>
+          <span class="progress-count" id="dur-count">0/8</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="dur-bar" style="width:0%"></div></div>
+      </div>
+      <ul class="checklist" id="dur-list">
+        <li class="check-item" onclick="toggle(this,'dur')">
+          <div class="check-box"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <span class="check-label">Entender o contexto: o que está buscando e quais desafios enfrenta no atendimento</span>
+        </li>
+        <li class="check-item" onclick="toggle(this,'dur')">
+          <div class="check-box"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <span class="check-label">Identificar quantos usuários/atendentes irão usar a plataforma</span>
+        </li>
+        <li class="check-item" onclick="toggle(this,'dur')">
+          <div class="check-box"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <span class="check-label">Perguntar sobre uso atual: WhatsApp pessoal, Business ou outra plataforma</span>
+        </li>
+        <li class="check-item" onclick="toggle(this,'dur')">
+          <div class="check-box"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <span class="check-label">Descobrir dor principal (desorganização, perda de leads, falta de supervisão…)</span>
+        </li>
+        <li class="check-item" onclick="toggle(this,'dur')">
+          <div class="check-box"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <span class="check-label">Verificar se conhece a API Oficial do WhatsApp (fundamental pré-demo)</span>
+        </li>
+        <li class="check-item" onclick="toggle(this,'dur')">
+          <div class="check-box"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <span class="check-label">Checar autoridade: quem decide a contratação? Precisa envolver outra pessoa?</span>
+        </li>
+        <li class="check-item" onclick="toggle(this,'dur')">
+          <div class="check-box"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <span class="check-label">Entender urgência/timeline: quando precisa da plataforma funcionando?</span>
+        </li>
+        <li class="check-item" onclick="toggle(this,'dur')">
+          <div class="check-box"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <span class="check-label">Anotar site ou Instagram para passar ao Closer com contexto completo</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="section-row">
+        <div class="card-title" style="margin-bottom:0">
+          <div class="card-icon">
+            <svg fill="none" viewBox="0 0 14 14"><rect x="2" y="3" width="10" height="9" rx="2" stroke="white" stroke-width="1.3"/><path d="M5 1v2M9 1v2M2 6h10" stroke="white" stroke-width="1.3" stroke-linecap="round"/></svg>
+          </div>
+          Agendamento da demo
+        </div>
+        <button class="reset-btn" onclick="resetSection('age')">Limpar</button>
+      </div>
+      <br>
+      <div class="progress-wrap">
+        <div class="progress-header">
+          <span class="progress-title">Progresso</span>
+          <span class="progress-count" id="age-count">0/5</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="age-bar" style="width:0%"></div></div>
+      </div>
+      <ul class="checklist" id="age-list">
+        <li class="check-item" onclick="toggle(this,'age')">
+          <div class="check-box"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <span class="check-label">Explicar brevemente o que o lead vai ver na demo (gerar curiosidade, não vender)</span>
+        </li>
+        <li class="check-item" onclick="toggle(this,'age')">
+          <div class="check-box"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <span class="check-label">Confirmar que o decisor estará presente na reunião</span>
+        </li>
+        <li class="check-item" onclick="toggle(this,'age')">
+          <div class="check-box"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <span class="check-label">Agendar data e horário e enviar convite/confirmação no WhatsApp</span>
+        </li>
+        <li class="check-item" onclick="toggle(this,'age')">
+          <div class="check-box"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <span class="check-label">Passar briefing completo para o Closer: segmento, dores, usuários e contexto</span>
+        </li>
+        <li class="check-item" onclick="toggle(this,'age')">
+          <div class="check-box"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <span class="check-label">Registrar lead no CRM com status, segmento, dor principal e data da demo</span>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- ===== SPIN ===== -->
+  <div class="section" id="sec-spin">
+    <p style="font-size:13px;color:var(--text2);margin-bottom:1rem;line-height:1.6">Toque em cada letra para expandir as perguntas. O SPIN é um guia — não um roteiro fixo.</p>
+    <div class="spin-grid">
+      <div class="spin-card" onclick="toggleSpin(this)">
+        <span class="spin-toggle">▼ expandir</span>
+        <div class="spin-letter">S</div>
+        <div class="spin-name">Situação</div>
+        <div class="spin-desc">Entender o contexto atual da operação do lead</div>
+        <div class="spin-questions">
+          <div class="spin-q">O que te motivou a buscar nossa plataforma?</div>
+          <div class="spin-q">Hoje qual é a estrutura de operação de atendimento?</div>
+          <div class="spin-q">Atende pelo Instagram e Facebook também?</div>
+          <div class="spin-q">Já utilizou ou utiliza Chatbot no atendimento?</div>
+          <div class="spin-q">Costuma fazer disparo em massa?</div>
+          <div class="spin-q">Você já conhece a API Oficial do WhatsApp?</div>
+        </div>
+      </div>
+      <div class="spin-card" onclick="toggleSpin(this)">
+        <span class="spin-toggle">▼ expandir</span>
+        <div class="spin-letter">P</div>
+        <div class="spin-name">Problema</div>
+        <div class="spin-desc">Revelar as dores e dificuldades do lead</div>
+        <div class="spin-questions">
+          <div class="spin-q">Como faz para gerir todos os contatos hoje?</div>
+          <div class="spin-q">Cada operador usa o próprio celular? Consegue supervisionar?</div>
+          <div class="spin-q">Como faz repasse de informações entre departamentos?</div>
+          <div class="spin-q">Consegue garantir que todos os leads são abordados?</div>
+          <div class="spin-q">Como avalia a qualidade dos atendimentos?</div>
+          <div class="spin-q">Já teve o número bloqueado pela META?</div>
+        </div>
+      </div>
+      <div class="spin-card" onclick="toggleSpin(this)">
+        <span class="spin-toggle">▼ expandir</span>
+        <div class="spin-letter">I</div>
+        <div class="spin-name">Implicação</div>
+        <div class="spin-desc">Fazer o lead sentir o impacto real dos problemas</div>
+        <div class="spin-questions">
+          <div class="spin-q">O que não ter uma plataforma centralizada está custando pra você?</div>
+          <div class="spin-q">Acredita que poderia ter mais vendas com melhor controle?</div>
+          <div class="spin-q">A falta de supervisão prejudica a sua gestão de equipe?</div>
+          <div class="spin-q">O que aconteceu na operação quando o número foi bloqueado?</div>
+          <div class="spin-q">Como faz para comunicar em massa com seus clientes?</div>
+        </div>
+      </div>
+      <div class="spin-card" onclick="toggleSpin(this)">
+        <span class="spin-toggle">▼ expandir</span>
+        <div class="spin-letter">N</div>
+        <div class="spin-name">Necessidade</div>
+        <div class="spin-desc">O lead descreve o valor da solução com as próprias palavras</div>
+        <div class="spin-questions">
+          <div class="spin-q">Ter um CRM completo ajudaria na sua gestão?</div>
+          <div class="spin-q">Métricas completas da operação melhorariam os resultados?</div>
+          <div class="spin-q">Centralizar o atendimento ajudaria na supervisão da equipe?</div>
+          <div class="spin-q">O chatbot garantindo respostas 24h melhoraria a eficiência?</div>
+          <div class="spin-q">Histórico de todas as conversas tornaria o atendimento mais eficiente?</div>
+        </div>
+      </div>
+    </div>
+    <div class="tip-box">
+      <strong>Dica:</strong> Não siga o SPIN como passo a passo. Foque na <strong>dor principal</strong> e aprofunde ela. Menos perguntas, mais qualidade.
+    </div>
+  </div>
+
+  <!-- ===== BANT ===== -->
+  <div class="section" id="sec-bant">
+    <p style="font-size:13px;color:var(--text2);margin-bottom:1rem;line-height:1.6">O BANT identifica aspectos práticos do projeto para facilitar o fechamento pelo Closer.</p>
+    <div class="bant-grid">
+      <div class="bant-card">
+        <div class="bant-letter">B</div>
+        <div class="bant-full">Budget — Orçamento</div>
+        <div class="bant-question">Qual o orçamento previsto para contratar a plataforma? Tem ciência dos valores do mercado de CRM?</div>
+      </div>
+      <div class="bant-card">
+        <div class="bant-letter">A</div>
+        <div class="bant-full">Authority — Autoridade</div>
+        <div class="bant-question">Você consegue decidir pela contratação ou precisamos envolver outras pessoas nessa conversa?</div>
+      </div>
+      <div class="bant-card">
+        <div class="bant-letter">N</div>
+        <div class="bant-full">Need — Necessidade</div>
+        <div class="bant-question">Qual é a prioridade desse projeto agora? O que acontece se continuar sem uma plataforma nos próximos 3 meses?</div>
+      </div>
+      <div class="bant-card">
+        <div class="bant-letter">T</div>
+        <div class="bant-full">Timeline — Prazo</div>
+        <div class="bant-question">Até quando pretende tomar essa decisão? Quando a plataforma precisa estar em funcionamento?</div>
+      </div>
+    </div>
+    <div class="tip-box" style="margin-top:.75rem">
+      <strong>Recomendação:</strong> Prefira fazer a qualificação por telefone. No WhatsApp, priorize as perguntas mais essenciais e deixe o Closer aprofundar no restante.
+    </div>
+  </div>
+
+  <!-- ===== ICP ===== -->
+  <div class="section" id="sec-icp">
+    <p class="section-label">Segmentos com melhor fit</p>
+    <div class="icp-grid">
+      <span class="icp-chip" onclick="selectICP(this,'imob')">🏠 Imobiliárias</span>
+      <span class="icp-chip" onclick="selectICP(this,'clinic')">🏥 Clínicas</span>
+      <span class="icp-chip" onclick="selectICP(this,'escola')">📚 Escolas/Cursos</span>
+      <span class="icp-chip" onclick="selectICP(this,'contab')">📊 Contabilidade</span>
+      <span class="icp-chip" onclick="selectICP(this,'sac')">🎧 SAC/Suporte</span>
+      <span class="icp-chip" onclick="selectICP(this,'ecomm')">🛒 E-commerce/Varejo</span>
+      <span class="icp-chip" onclick="selectICP(this,'agencia')">🎨 Agências</span>
+    </div>
+    <div id="icp-detail"></div>
+    <div id="signals-card" class="card" style="margin-top:1rem">
+      <div class="card-title">
+        <div class="card-icon">
+          <svg fill="none" viewBox="0 0 14 14"><path d="M7 2a2 2 0 100 4 2 2 0 000-4zM3 11c0-2 1.79-3.5 4-3.5s4 1.5 4 3.5" stroke="white" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </div>
+        <span id="signals-title">Sinais de alta aderência</span>
+      </div>
+      <ul class="checklist" id="signals-list">
+        <li class="signal-item" style="color:var(--text2);font-size:13px;border-bottom:none">← Selecione um segmento acima para ver os sinais específicos</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== OBJEÇÕES ===== -->
+  <div class="section" id="sec-objecoes">
+    <p style="font-size:13px;color:var(--text2);margin-bottom:1rem;line-height:1.6">Principais objeções. Toque para ver a resposta recomendada.</p>
+
+    <p class="section-label">Cliente final</p>
+    <div class="obj-item" onclick="toggleObj(this)">
+      <div class="obj-header">
+        <span class="obj-tag">💰 Custo</span>
+        <span class="obj-q">"A API Oficial é muito cara…"</span>
+        <span class="obj-chevron">▼</span>
+      </div>
+      <div class="obj-body">A API Oficial não é custo extra — é um investimento para manter a saúde do seu número. Imagine ter uma base de clientes construída por anos e perder tudo por um bloqueio. Com a API Oficial você tem segurança, qualidade de entrega e conformidade com as políticas da META.</div>
+    </div>
+    <div class="obj-item" onclick="toggleObj(this)">
+      <div class="obj-header">
+        <span class="obj-tag">🚫 Funcionalidade</span>
+        <span class="obj-q">"Não tem ligações e status…"</span>
+        <span class="obj-chevron">▼</span>
+      </div>
+      <div class="obj-body">Com a coexistência, ligações, status e demais funções ficam disponíveis pelo WhatsApp normal. O importante é entender sua dinâmica atual para adaptar o fluxo dentro da plataforma.</div>
+    </div>
+    <div class="obj-item" onclick="toggleObj(this)">
+      <div class="obj-header">
+        <span class="obj-tag">💸 Valor</span>
+        <span class="obj-q">"O plano é mais caro que outros…"</span>
+        <span class="obj-chevron">▼</span>
+      </div>
+      <div class="obj-body">Com qual plataforma está comparando? Entre plataformas oficiais, oferecemos o melhor custo-benefício. O cliente tem acesso direto ao suporte e um Customer Success que acompanha toda a jornada.</div>
+    </div>
+    <div class="obj-item" onclick="toggleObj(this)">
+      <div class="obj-header">
+        <span class="obj-tag">🔧 Onboarding</span>
+        <span class="obj-q">"Por que tem taxa de implantação?"</span>
+        <span class="obj-chevron">▼</span>
+      </div>
+      <div class="obj-body">A taxa cobre todo o suporte de conexão com a META, configuração completa da plataforma, treinamentos e suporte direto com o time. Cuidamos de tudo para que você aproveite ao máximo desde o dia 1.</div>
+    </div>
+
+    <div class="tip-box" style="margin-top:.75rem">
+      <strong>Lembre-se:</strong> Nunca responda objeções de forma defensiva. Entenda primeiro, depois reframe. A objeção é um sinal de interesse.
+    </div>
+  </div>
+
+  <div class="footer"><p>helenaCRM · Playbook SDR v1.0</p></div>
+</div>
+
+<script>
+// THEME
+(function(){
+  if(localStorage.getItem('htheme')==='light') document.body.classList.add('light');
+  updateThemeBtn();
+})();
+function toggleTheme(){
+  document.body.classList.toggle('light');
+  localStorage.setItem('htheme', document.body.classList.contains('light') ? 'light' : 'dark');
+  updateThemeBtn();
+}
+function updateThemeBtn(){
+  var icon = document.getElementById('thm-icon');
+  if(icon) icon.textContent = document.body.classList.contains('light') ? '🌙' : '☀️';
+}
+
+const icpData = {
+  imob:   { title:"🏠 Imobiliárias e Corretoras",   dores:["Leads de múltiplos portais sem centralização","Ciclo de venda longo exige acompanhamento contínuo","Cobrança de aluguéis e cauções via WhatsApp","Integração com ERP imobiliário e portais de anúncios"] },
+  clinic: { title:"🏥 Clínicas e Consultórios",      dores:["Gestão de agendamentos e confirmações automáticas","Segmentação por tipo de paciente (novo, recorrente, crônico)","Cobranças de consultas com status integrado no CRM","Acompanhamento de tratamentos longos e follow-ups"] },
+  escola: { title:"📚 Escolas, Cursos e Instituições",dores:["Captação e conversão de novos alunos com funil CRM","Comunicação recorrente com alunos e responsáveis","Gestão de inadimplência integrada ao financeiro","Campanhas para novas turmas rastreáveis por UTM"] },
+  contab: { title:"📊 Escritórios de Contabilidade", dores:["Alto volume em IR, fechamento fiscal e declarações","Triagem automática para dúvidas frequentes (prazos, tributos)","Coleta e conferência de documentos via WhatsApp","Follow-up automático de pendências com clientes"] },
+  sac:    { title:"🎧 SAC e Atendimento ao Consumidor",dores:["Alto volume de solicitações em múltiplos canais","Reduzir tempo de resposta e aumentar satisfação","Rastrear solicitações até a resolução final","Relatórios de tempo, volume e performance individual"] },
+  ecomm:  { title:"🛒 E-commerce e Varejo",          dores:["Atendimento em picos de promoções e datas sazonais","Engajamento pós-compra e campanhas de fidelização","Solicitações recorrentes: troca, devolução, rastreio","Integração entre marketing e atendimento"] },
+  agencia:{ title:"🎨 Agências de Marketing", dores:["Alto volume de leads chegando via WhatsApp sem controle","Múltiplos atendentes respondendo por celular pessoal, sem histórico","Dificuldade em provar ROI das campanhas","Leads que somem por falta de follow-up","Falta de visibilidade sobre qualidade dos atendimentos","Escalabilidade travada por operação manual"] }
+};
+
+const sinaisData = {
+  imob: [{e:"🔴",t:"Gerencia leads de portais diferentes no celular, sem centralização"},{e:"🔴",t:"Corretor perde o timing de resposta — lead esfria antes do retorno"},{e:"🟡",t:"Faz tráfego pago mas não sabe quais anúncios geram visitas reais"},{e:"🟡",t:"Vários corretores atendendo o mesmo lead sem saber"},{e:"🟢",t:"Já usou alguma plataforma mas abandonou por complexidade ou custo"}],
+  clinic:[{e:"🔴",t:"Agendamentos feitos por WhatsApp pessoal, sem confirmação automática"},{e:"🔴",t:"Alto índice de faltas — não tem lembrete automático para pacientes"},{e:"🟡",t:"Não consegue segmentar pacientes novos, recorrentes e crônicos"},{e:"🟢",t:"Quer crescer o número de pacientes mas operação já está no limite"}],
+  escola:[{e:"🔴",t:"Captação de novos alunos feita no WhatsApp pessoal sem funil"},{e:"🔴",t:"Leads de campanhas somem por falta de follow-up do comercial"},{e:"🟡",t:"Não rastreia de qual campanha veio cada aluno interessado"},{e:"🟢",t:"Já tentou usar grupo de WhatsApp mas perdeu o controle"}],
+  contab:[{e:"🔴",t:"Atende clientes pelo WhatsApp pessoal — histórico se perde ao trocar celular"},{e:"🔴",t:"Época de IR: volume explode e a equipe não dá conta"},{e:"🟡",t:"Clientes inadimplentes sem processo de cobrança automatizado"},{e:"🟢",t:"Escritório crescendo mas processo de atendimento ainda é informal"}],
+  sac:   [{e:"🔴",t:"Alto volume de chamados sem fila organizada"},{e:"🔴",t:"Cliente repete o problema toda vez que fala com atendente diferente"},{e:"🟡",t:"Sem métricas de tempo médio de resposta ou taxa de resolução"},{e:"🟢",t:"Já usou plataforma concorrente mas tinha limitações"}],
+  ecomm: [{e:"🔴",t:"Picos de demanda em promoções derrubam o atendimento"},{e:"🔴",t:"Trocas e devoluções respondidos de forma lenta e desorganizada"},{e:"🟡",t:"Não consegue mensurar qual campanha gerou mais vendas via WhatsApp"},{e:"🟢",t:"Faz disparo em massa por ferramenta não oficial e já teve número bloqueado"}],
+  agencia:[{e:"🔴",t:"Closers e SDRs atendendo leads pelo celular pessoal, sem histórico centralizado"},{e:"🔴",t:"Não sabe quais anúncios geram leads que realmente convertem"},{e:"🔴",t:"Leads qualificados somem no funil por falta de follow-up estruturado"},{e:"🟡",t:"Gestor sem visibilidade do que cada atendente respondeu"},{e:"🟢",t:"Já tentou CRM mas a equipe abandonou por ser complexo demais"}]
+};
+
+function showTab(id, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+function toggle(el, sec) {
+  el.classList.toggle('checked');
+  updateProgress(sec);
+}
+function updateProgress(sec) {
+  var list = document.getElementById(sec+'-list');
+  var total = list.querySelectorAll('.check-item').length;
+  var done  = list.querySelectorAll('.check-item.checked').length;
+  document.getElementById(sec+'-count').textContent = done+'/'+total;
+  document.getElementById(sec+'-bar').style.width = Math.round(done/total*100)+'%';
+}
+function resetSection(sec) {
+  document.getElementById(sec+'-list').querySelectorAll('.check-item').forEach(i => i.classList.remove('checked'));
+  updateProgress(sec);
+}
+function toggleSpin(el) { el.classList.toggle('open'); }
+function toggleObj(el)  { el.classList.toggle('open'); }
+function selectICP(el, key) {
+  document.querySelectorAll('.icp-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  var d = icpData[key];
+  document.getElementById('icp-detail').innerHTML =
+    '<div class="card"><div class="card-title"><div class="card-icon"><svg fill="none" viewBox="0 0 14 14"><path d="M7 2a2 2 0 100 4 2 2 0 000-4zM3 11c0-2 1.79-3.5 4-3.5s4 1.5 4 3.5" stroke="white" stroke-width="1.3" stroke-linecap="round"/></svg></div>'+d.title+'</div><ul class="checklist">'+d.dores.map(function(x){return '<li class="icp-dor">'+x+'</li>';}).join('')+'</ul></div>';
+  var sinais = sinaisData[key];
+  document.getElementById('signals-title').textContent = 'Sinais de aderência — ' + d.title.replace(/^.{2}/,'').trim();
+  document.getElementById('signals-list').innerHTML = sinais.map(function(s,i){return '<li class="signal-item"'+(i===sinais.length-1?' style="border-bottom:none"':'')+'>'+s.e+' '+s.t+'</li>';}).join('');
+}
+</script>
+</body>
+</html>
