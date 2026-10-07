@@ -4258,10 +4258,11 @@ window.addEventListener('load', function(){
       <div><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#22C55E;margin-bottom:.4rem">👥 Total de usuários (incluindo os 3 da base)</div>
       <div style="display:flex;align-items:center;gap:10px"><input id="p_usr" type="number" value="3" min="1" oninput="calcPlano()" style="background:rgba(255,220,0,.06);border:1px solid rgba(255,220,0,.2);border-radius:6px;padding:5px 8px;font-size:13px;color:#fff;font-family:'DM Sans',sans-serif;width:90px;text-align:right"><span style="font-size:12px;color:#8B949E">usuários no total</span><span style="font-size:12px;color:#22C55E;font-weight:600" id="p_usr_lbl">3 inclusos</span></div></div>
 
-      <div><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#22C55E;margin-bottom:.4rem">📱 Canais WhatsApp / Instagram</div>
-      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><input id="p_can" type="number" value="1" min="1" oninput="calcPlano()" style="background:rgba(255,220,0,.06);border:1px solid rgba(255,220,0,.2);border-radius:6px;padding:5px 8px;font-size:13px;color:#fff;font-family:'DM Sans',sans-serif;width:70px;text-align:right"><span style="font-size:12px;color:#8B949E">canais (1 incluso)</span><span style="font-size:12px;color:#8B949E;margin-left:8px">· Desses, quantos são Z-API?</span>
-        <input id="p_zapi" type="number" value="0" min="0" oninput="calcPlano()" style="background:rgba(255,220,0,.06);border:1px solid rgba(255,220,0,.2);border-radius:6px;padding:5px 8px;font-size:13px;color:#fff;font-family:'DM Sans',sans-serif;width:60px;text-align:right;margin-left:6px">
-        <span style="font-size:12px;color:#8B949E">× R$69,90/canal</span></div></div>
+<div><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#22C55E;margin-bottom:.4rem">📱 Transcrição / Agentes de IA / WebChat</div>
+<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><input id="p_can" type="number" value="1" min="1" oninput="calcPlano()" style="background:rgba(255,220,0,.06);border:1px solid rgba(255,220,0,.2);border-radius:6px;padding:5px 8px;font-size:13px;color:#fff;font-family:'DM Sans',sans-serif;width:70px;text-align:right"><span style="font-size:12px;color:#8B949E">canais (1 incluso)</span><span style="font-size:12px;color:#8B949E;margin-left:8px">· Desses, quantos são Z-API?</span>
+  <input id="p_zapi" type="number" value="0" min="0" max="1" oninput="calcPlano()" style="background:rgba(255,220,0,.06);border:1px solid rgba(255,220,0,.2);border-radius:6px;padding:5px 8px;font-size:13px;color:#fff;font-family:'DM Sans',sans-serif;width:60px;text-align:right;margin-left:6px">
+  <span style="font-size:12px;color:#8B949E">× R$69,90/canal</span></div>
+  <div id="p_zapi_aviso" style="display:none;margin-top:6px;font-size:12px;color:#fbbf24">⚠️ A quantidade de Z-API não pode ser maior que o total de canais. O valor foi ajustado automaticamente.</div></div>
 
       <div><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#22C55E;margin-bottom:.4rem">📊 Contatos ativos estimados por mês</div>
       <div style="display:flex;align-items:center;gap:10px"><input id="p_cont" type="number" value="5000" min="0" step="500" oninput="calcPlano()" style="background:rgba(255,220,0,.06);border:1px solid rgba(255,220,0,.2);border-radius:6px;padding:5px 8px;font-size:13px;color:#fff;font-family:'DM Sans',sans-serif;width:110px;text-align:right"><span style="font-size:12px;color:#8B949E">contatos (até 5.000 incluso)</span><span style="font-size:12px;color:#22C55E;font-weight:600" id="p_inf_lbl">Incluso</span></div></div>
@@ -4270,6 +4271,22 @@ window.addEventListener('load', function(){
         <div><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#22C55E;margin-bottom:.4rem">🤖 IA Transcrição de áudio</div><label style="font-size:12px;color:#8B949E;display:flex;align-items:center;gap:6px;cursor:pointer"><input type="checkbox" id="p_ia" onchange="calcPlano()" style="accent-color:#22C55E"> Ativar (R$3,99/usuário/mês)</label></div>
         <div><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#22C55E;margin-bottom:.4rem">🧠 Agentes de IA</div><label style="font-size:12px;color:#8B949E;display:flex;align-items:center;gap:6px;cursor:pointer"><input type="checkbox" id="p_ag" onchange="calcPlano()" style="accent-color:#22C55E"> Ativar (R$50,00/mês)</label></div>
       </div>
+<div>
+  <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#22C55E;margin-bottom:.4rem">📞 Ligação por WhatsApp</div>
+  <label style="font-size:12px;color:#8B949E;display:flex;align-items:center;gap:6px;cursor:pointer"><input type="checkbox" id="p_lig" onchange="calcPlano()" style="accent-color:#22C55E"> Ativar (R$49,90/mês)</label>
+  <div id="p_lig_box" style="display:none;margin-top:.7rem;padding:.8rem 1rem;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:8px">
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:.5rem">
+      <input id="p_lig_com" type="number" value="0" min="0" oninput="calcPlano()" style="background:rgba(255,220,0,.06);border:1px solid rgba(255,220,0,.2);border-radius:6px;padding:5px 8px;font-size:13px;color:#fff;font-family:'DM Sans',sans-serif;width:70px;text-align:right">
+      <span style="font-size:12px;color:#8B949E">usuários <strong style="color:#fff">com gravação</strong> × R$4,99/usuário</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+      <input id="p_lig_sem" type="number" value="0" min="0" oninput="calcPlano()" style="background:rgba(255,220,0,.06);border:1px solid rgba(255,220,0,.2);border-radius:6px;padding:5px 8px;font-size:13px;color:#fff;font-family:'DM Sans',sans-serif;width:70px;text-align:right">
+      <span style="font-size:12px;color:#8B949E">usuários <strong style="color:#fff">sem gravação</strong> × R$3,49/usuário</span>
+    </div>
+    <div id="p_lig_aviso" style="display:none;margin-top:6px;font-size:12px;color:#fbbf24">⚠️ A soma de usuários com ligação não pode ultrapassar o total de usuários. O valor foi ajustado.</div>
+  </div>
+</div>
+      
 
       <div><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#22C55E;margin-bottom:.4rem;display:flex;align-items:center;gap:6px">📈 Seu markup de revenda (%)
         <button onclick="var t=document.getElementById('mkt-sim');t.style.display=t.style.display==='none'?'block':'none'" style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:rgba(255,255,255,.15);color:#8B949E;font-size:10px;font-weight:700;cursor:pointer;border:none;flex-shrink:0;line-height:1">i</button>
@@ -4300,11 +4317,15 @@ window.addEventListener('load', function(){
         <tbody>
           <tr style="border-bottom:1px solid rgba(255,255,255,.04)"><td id="pd_base_nome" style="padding:8px 14px;font-size:13px;color:#fff">Licença base (3 usuários · 1 canal)</td><td style="padding:8px 14px;text-align:right;font-size:13px;color:#8B949E">1</td><td id="pd_base_unit" style="padding:8px 14px;text-align:right;font-size:13px;color:#8B949E">R$149,90</td><td id="pd_base_val" style="padding:8px 14px;text-align:right;font-size:13px;font-weight:700;color:#22C55E">R$149,90</td></tr>
           <tr style="border-bottom:1px solid rgba(255,255,255,.04)"><td style="padding:8px 14px;font-size:13px;color:#fff">Usuários adicionais</td><td style="padding:8px 14px;text-align:right;font-size:12px;color:#8B949E" id="pd_usr_q">—</td><td style="padding:8px 14px;text-align:right;font-size:12px;color:#8B949E" id="pd_usr_u">—</td><td style="padding:8px 14px;text-align:right;font-size:13px;font-weight:700;color:#22C55E" id="pd_usr">R$ 0,00</td></tr>
-          <tr style="border-bottom:1px solid rgba(255,255,255,.04)"><td style="padding:8px 14px;font-size:13px;color:#fff">Canais adicionais (WA/IG)</td><td style="padding:8px 14px;text-align:right;font-size:12px;color:#8B949E" id="pd_can_q">—</td><td style="padding:8px 14px;text-align:right;font-size:12px;color:#8B949E" id="pd_can_u">—</td><td style="padding:8px 14px;text-align:right;font-size:13px;font-weight:700;color:#22C55E" id="pd_can">R$ 0,00</td></tr>
+          <tr style="border-bottom:1px solid rgba(255,255,255,.04)"><td style="padding:8px 14px;font-size:13px;color:#fff">Canais adicionais (WA/IG/WebChat)</td><td style="padding:8px 14px;text-align:right;font-size:12px;color:#8B949E" id="pd_can_q">—</td><td style="padding:8px 14px;text-align:right;font-size:12px;color:#8B949E" id="pd_can_u">—</td><td style="padding:8px 14px;text-align:right;font-size:13px;font-weight:700;color:#22C55E" id="pd_can">R$ 0,00</td></tr>
           <tr style="border-bottom:1px solid rgba(255,255,255,.04)"><td style="padding:8px 14px;font-size:13px;color:#fff">Z-API</td><td style="padding:8px 14px;text-align:right;font-size:12px;color:#8B949E" id="pd_zapi_q">—</td><td style="padding:8px 14px;text-align:right;font-size:12px;color:#8B949E">R$69,90</td><td style="padding:8px 14px;text-align:right;font-size:13px;font-weight:700;color:#22C55E" id="pd_zapi">R$ 0,00</td></tr>
           <tr style="border-bottom:1px solid rgba(255,255,255,.04)"><td style="padding:8px 14px;font-size:13px;color:#fff">Infraestrutura em nuvem</td><td style="padding:8px 14px;text-align:right;font-size:12px;color:#8B949E" id="pd_inf_q">—</td><td style="padding:8px 14px;text-align:right;font-size:12px;color:#8B949E" id="pd_inf_u">—</td><td style="padding:8px 14px;text-align:right;font-size:13px;font-weight:700;color:#22C55E" id="pd_inf">R$ 0,00</td></tr>
           <tr style="border-bottom:1px solid rgba(255,255,255,.04)"><td style="padding:8px 14px;font-size:13px;color:#fff">IA Transcrição de áudio</td><td style="padding:8px 14px;text-align:right;font-size:12px;color:#8B949E" id="pd_ia_q">—</td><td style="padding:8px 14px;text-align:right;font-size:12px;color:#8B949E">R$3,99/usr</td><td style="padding:8px 14px;text-align:right;font-size:13px;font-weight:700;color:#22C55E" id="pd_ia">R$ 0,00</td></tr>
-          <tr><td style="padding:8px 14px;font-size:13px;color:#fff">Agentes de IA</td><td style="padding:8px 14px;text-align:right;font-size:12px;color:#8B949E">—</td><td style="padding:8px 14px;text-align:right;font-size:12px;color:#8B949E">R$50,00</td><td style="padding:8px 14px;text-align:right;font-size:13px;font-weight:700;color:#22C55E" id="pd_ag">R$ 0,00</td></tr>
+          
+          <tr style="border-bottom:1px solid rgba(255,255,255,.04)"><td style="padding:8px 14px;font-size:13px;color:#fff">Agentes de IA</td><td style="padding:8px 14px;text-align:right;font-size:12px;color:#8B949E">—</td><td style="padding:8px 14px;text-align:right;font-size:12px;color:#8B949E">R$50,00</td><td style="padding:8px 14px;text-align:right;font-size:13px;font-weight:700;color:#22C55E" id="pd_ag">R$ 0,00</td></tr>
+        <tr style="border-bottom:1px solid rgba(255,255,255,.04)"><td style="padding:8px 14px;font-size:13px;color:#fff">Ligação por WhatsApp</td><td style="padding:8px 14px;text-align:right;font-size:12px;color:#8B949E">—</td><td style="padding:8px 14px;text-align:right;font-size:12px;color:#8B949E">R$49,90</td><td style="padding:8px 14px;text-align:right;font-size:13px;font-weight:700;color:#22C55E" id="pd_lig">R$ 0,00</td></tr>
+        <tr style="border-bottom:1px solid rgba(255,255,255,.04)"><td style="padding:8px 14px;font-size:13px;color:#fff">Ligação — usuários com gravação</td><td style="padding:8px 14px;text-align:right;font-size:12px;color:#8B949E" id="pd_ligc_q">—</td><td style="padding:8px 14px;text-align:right;font-size:12px;color:#8B949E">R$4,99/usr</td><td style="padding:8px 14px;text-align:right;font-size:13px;font-weight:700;color:#22C55E" id="pd_ligc">R$ 0,00</td></tr>
+        <tr><td style="padding:8px 14px;font-size:13px;color:#fff">Ligação — usuários sem gravação</td><td style="padding:8px 14px;text-align:right;font-size:12px;color:#8B949E" id="pd_ligs_q">—</td><td style="padding:8px 14px;text-align:right;font-size:12px;color:#8B949E">R$3,49/usr</td><td style="padding:8px 14px;text-align:right;font-size:13px;font-weight:700;color:#22C55E" id="pd_ligs">R$ 0,00</td></tr>
         </tbody>
       </table>
     </div>
@@ -4389,7 +4410,27 @@ function calcPlano(){
   var usr=parseInt(document.getElementById('p_usr').value)||1;
   var can=parseInt(document.getElementById('p_can').value)||1;
   var cont=parseInt(document.getElementById('p_cont').value)||0;
-  var zapiQtd=Math.min(parseInt(document.getElementById("p_zapi").value)||0,can);
+  // Validação Z-API <= canais
+var zapiEl=document.getElementById('p_zapi');
+var zapiQtd=parseInt(zapiEl.value)||0;
+zapiEl.max=can;
+var zapiAv=document.getElementById('p_zapi_aviso');
+if(zapiQtd>can){ zapiQtd=can; zapiEl.value=can; if(zapiAv)zapiAv.style.display='block'; }
+else if(zapiAv){ zapiAv.style.display='none'; }
+
+// Ligação por WhatsApp
+var lig=document.getElementById('p_lig').checked;
+document.getElementById('p_lig_box').style.display=lig?'block':'none';
+var lc=0, ls=0, ligAv=document.getElementById('p_lig_aviso'), ligAjuste=false;
+if(lig){
+  var lcEl=document.getElementById('p_lig_com'), lsEl=document.getElementById('p_lig_sem');
+  lc=Math.max(0,parseInt(lcEl.value)||0);
+  ls=Math.max(0,parseInt(lsEl.value)||0);
+  if(lc>usr){ lc=usr; lcEl.value=lc; ligAjuste=true; }
+  if(lc+ls>usr){ ls=usr-lc; lsEl.value=ls; ligAjuste=true; }
+  if(ligAv)ligAv.style.display=ligAjuste?'block':'none';
+}
+var cLig=lig?49.90:0, cLigC=lc*4.99, cLigS=ls*3.49;
   var ia=document.getElementById('p_ia').checked;
   var ag=document.getElementById('p_ag').checked;
   var marg=parseFloat(document.getElementById('p_marg').value)||0;
@@ -4419,7 +4460,7 @@ var avisoEl=document.getElementById('sim-aviso');
 if(avisoEl)avisoEl.style.display=base===99.90?'block':'none';
 var elbunit=document.getElementById('pd_base_unit');
 if(elbunit)elbunit.textContent=_fmt(base);
-var total=base+cu+cc+cz+ci+cIA+cAG;
+var total=base+cu+cc+cz+ci+cIA+cAG+cLig+cLigC+cLigS;
 var elbn=document.getElementById('pd_base_nome');
 if(elbn)elbn.textContent=base===99.90?'Licença base (1 usuário · 1 canal)':'Licença base (3 usuários · 1 canal)';
 var elbv=document.getElementById('pd_base_val');
@@ -4432,6 +4473,11 @@ if(elbv)elbv.textContent=_fmt(base);
   document.getElementById('pd_inf_q').textContent=iq; document.getElementById('pd_inf_u').textContent=iu; document.getElementById('pd_inf').textContent=_fmt(ci);
   document.getElementById('pd_ia_q').textContent=ia?usr+'x usr':'—'; document.getElementById('pd_ia').textContent=_fmt(cIA);
   document.getElementById('pd_ag').textContent=_fmt(cAG);
+  document.getElementById('pd_lig').textContent=_fmt(cLig);
+document.getElementById('pd_ligc_q').textContent=lc>0?lc+'x usr':'—';
+document.getElementById('pd_ligc').textContent=_fmt(cLigC);
+document.getElementById('pd_ligs_q').textContent=ls>0?ls+'x usr':'—';
+document.getElementById('pd_ligs').textContent=_fmt(cLigS);
   document.getElementById('pr_custo').textContent=_fmt(total);
   document.getElementById('pr_marg').textContent=_fmt(mgv);
   document.getElementById('pr_cl').textContent=_fmt(cl);
@@ -4442,9 +4488,12 @@ function resetPlano(){
   document.getElementById('p_usr').value=3; document.getElementById('p_can').value=1;
   document.getElementById('p_cont').value=5000; document.getElementById('p_zapi').value=0;
   document.getElementById('p_ia').checked=false; document.getElementById('p_ag').checked=false;
+  document.getElementById('p_lig').checked=false;
+document.getElementById('p_lig_com').value=0;
+document.getElementById('p_lig_sem').value=0;
   document.getElementById('p_marg').value=100; document.getElementById('p_imp').value=8; calcPlano();
 }
-['p_usr','p_can','p_cont','p_marg','p_imp','p_zapi'].forEach(function(id){
+['p_usr','p_can','p_cont','p_marg','p_imp','p_zapi','p_lig_com','p_lig_sem'].forEach(function(id){
   var el=document.getElementById(id);if(el)el.addEventListener('input',calcPlano);
 });
 </script>
